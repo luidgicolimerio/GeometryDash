@@ -16,7 +16,6 @@ class Cubo(pygame.sprite.Sprite):
         self.sprites_pulo.append(pygame.image.load('Sprites/Pulo/pulo_7.png'))
 
         self.sprites_anda = []
-        self.sprites_anda.append(pygame.image.load('Sprites/Pulo/pulo_1.png'))
         self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_0.png'))
         self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_1.png'))
         self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_2.png'))
@@ -24,12 +23,19 @@ class Cubo(pygame.sprite.Sprite):
         self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_4.png'))
         self.atual = 0
         self.image = self.sprites_anda[self.atual]
+        
+        self.pos_x = 300
+        self.pos_y = 702
 
         self.rect = self.image.get_rect()
-        self.rect.topleft = 300, 702
+        self.rect.topleft = self.pos_x, self.pos_y
 
         self.andando = False
         self.pulando = False
+
+        self.gravity = 0.6
+        self.heigth = 20
+        self.velocity = self.heigth
 
     def andar(self):
         self.andando = True
@@ -37,6 +43,7 @@ class Cubo(pygame.sprite.Sprite):
     def parado(self):
         self.andando = False
         self.atual = 0
+        self.image = self.sprites_pulo[self.atual]
     
     def pula(self):
         self.pulando = True
@@ -45,20 +52,23 @@ class Cubo(pygame.sprite.Sprite):
 
     def update(self):
         if self.andando:
-            if self.atual >= 5:
+            if self.atual >= 4:
                 self.atual = 1
                 self.andando = False
             self.atual += 0.05
             self.image = self.sprites_anda[int(self.atual)]
 
         if self.pulando:
-            if self.atual >= 6:
-                self.atual = 0
+            self.pos_y -= self.velocity
+            self.velocity -= self.gravity
+            self.rect.topleft = self.pos_x, self.pos_y
+            if self.velocity < -self.heigth:
                 self.pulando = False
-            self.atual += 0.1
-            self.image = self.sprites_pulo[int(self.atual)]
-
-
+                self.gravity = 0.6
+                self.heigth = 20
+                self.velocity = self.heigth
+                self.pos_y = 702
+                self.rect.topleft = self.pos_x, self.pos_y
 
 todas_sprites = pygame.sprite.Group()
 cubo = Cubo()
