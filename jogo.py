@@ -12,15 +12,23 @@ height = 900
 
 
 def load():
-    global sys_font, clock, px, cl1, cl2, cl3, cl, fundo,tiles, fundo_width,scroll, fundo_rect
+    global sys_font, clock, px, cl1, cl2, cl3, cl, fundo,tiles, fundo_width,scroll, fundo_rect, tri, ret
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 20)
     clock = pygame.time.Clock()
     px = 0
-    cl1 = 100
-    cl2 = 150
-    cl3 = 250
+    cl1 = 0
+    cl2 = 0
+    cl3 = 0
     cl = 0
+
+
+
+    tri = pygame.image.load('triangulo.PNG')
+    ret = pygame.image.load('retangulo.PNG')
+    tri = pygame.transform.scale(tri, (tri.get_width()/ 2.6, tri.get_height() / 2.6))
+    ret = pygame.transform.scale(ret, (ret.get_width()/ 2.6, ret.get_height() / 2.6))
+
 
 
     fundo = pygame.image.load('Frame1.PNG').convert()
@@ -34,7 +42,7 @@ def load():
 
 
 def draw_screen(screen):
-    global cl1, cl2, cl3, cl, fundo
+    global cl1, cl2, cl3, cl, fundo, tri, ret
     screen.fill((100,160,255))
     
     t = sys_font.render(' ', False, (0,0,0))
@@ -42,22 +50,22 @@ def draw_screen(screen):
 
     screen.blit(fundo, (0,0))
 
-
-    
-
-
+ 
 
 
 def update(dt):
     global px, cl1, cl2, cl3, clock, cl, scroll
+
 
     for i in range(0, tiles):
         screen.blit(fundo, (i * fundo_width + scroll, 0))
         fundo_rect.x = i * fundo_width + scroll
         pygame.draw.rect(screen, (255, 0, 0), fundo_rect, 1)
 
+        if cubo.andando == True:
           #scroll background
-        scroll = scroll - 1.33
+            scroll = scroll - (0.08 * dt)
+            cl1 = cl1 - (0.08 * dt)
 
           #reset scroll
         if abs(scroll) > fundo_width:
@@ -67,11 +75,18 @@ def update(dt):
     pygame.draw.rect(screen, (255, 130, 130), (0, 790, 2000, 2000))
     pygame.draw.rect(screen, (255, 100, 100), (0, 800, 2000, 2000))
 
+    # espinho e retangulo
+    screen.blit(tri, (600 + cl1, 754))
+    screen.blit(tri, (800 + cl1, 754))
+    screen.blit(tri, (1000 + cl1, 754))
+    screen.blit(ret, (1200 + cl1, 724))
+    screen.blit(ret, (1350 + cl1, 694))            
+    screen.blit(ret, (1500 + cl1, 664))
+
     
     todas_sprites.draw(screen)
     todas_sprites.update()
     pygame.display.flip()
-
 
 
 
@@ -90,10 +105,15 @@ def main_loop(screen):
 
             
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            cubo.pula()
         if keys[pygame.K_RIGHT]:
             cubo.andar()
         else:
             cubo.parado()
+            
+
+
 
 
 
