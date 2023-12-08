@@ -26,7 +26,7 @@ class Cubo(pygame.sprite.Sprite):
         self.image = self.sprites_anda[self.atual]
 
         self.rect = self.image.get_rect()
-        self.rect.topleft = 100, 100
+        self.rect.topleft = 300, 702
 
         self.andando = False
         self.pulando = False
