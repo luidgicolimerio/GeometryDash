@@ -7,6 +7,7 @@ class Cubo(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.sprites_pulo = []
+        self.sprites_pulo.append(pygame.image.load('Sprites/Pulo/pulo_0.png'))
         self.sprites_pulo.append(pygame.image.load('Sprites/Pulo/pulo_1.png'))
         self.sprites_pulo.append(pygame.image.load('Sprites/Pulo/pulo_2.png'))
         self.sprites_pulo.append(pygame.image.load('Sprites/Pulo/pulo_3.png'))
@@ -23,9 +24,9 @@ class Cubo(pygame.sprite.Sprite):
         self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_4.png'))
         self.atual = 0
         self.image = self.sprites_anda[self.atual]
-        
+
         self.pos_x = 300
-        self.pos_y = 702
+        self.pos_y = 742
 
         self.rect = self.image.get_rect()
         self.rect.topleft = self.pos_x, self.pos_y
@@ -34,7 +35,7 @@ class Cubo(pygame.sprite.Sprite):
         self.pulando = False
 
         self.gravity = 0.6
-        self.heigth = 20
+        self.heigth = 12
         self.velocity = self.heigth
 
     def andar(self):
@@ -47,8 +48,6 @@ class Cubo(pygame.sprite.Sprite):
     
     def pula(self):
         self.pulando = True
-
-
 
     def update(self):
         if self.andando:
@@ -65,11 +64,23 @@ class Cubo(pygame.sprite.Sprite):
             if self.velocity < -self.heigth:
                 self.pulando = False
                 self.gravity = 0.6
-                self.heigth = 20
+                self.heigth = 12
                 self.velocity = self.heigth
-                self.pos_y = 702
+                self.pos_y = 742
                 self.rect.topleft = self.pos_x, self.pos_y
 
+class Spike(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('triangulo.png')
+        self.rect = self.image.get_rect()
+        
+
+
+
+colisao_sprites = pygame.sprite.Group()
 todas_sprites = pygame.sprite.Group()
 cubo = Cubo()
+spike = Spike()
 todas_sprites.add(cubo)
+todas_sprites.add(spike)
