@@ -2,9 +2,7 @@ import pygame
 import math
 from pygame.locals import *
 from sys import exit
-from cubo import todas_sprites, cubo
-
-
+from cubo import todas_sprites, brilho, cubo
 
 
 width = 1200
@@ -62,7 +60,7 @@ def update(dt):
         fundo_rect.x = i * fundo_width + scroll
         pygame.draw.rect(screen, (255, 0, 0), fundo_rect, 1)
 
-        if cubo.andando == True:
+        if brilho.andando == True:
           #scroll background
             scroll = scroll - (0.08 * dt)
             cl1 = cl1 - (0.08 * dt)
@@ -106,13 +104,17 @@ def main_loop(screen):
             
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
-            cubo.pula()
+            brilho.pula()
         if keys[pygame.K_RIGHT]:
-            cubo.andar()
+            brilho.andar()
         else:
-            cubo.parado()
+            brilho.parado()
+        
+        if keys[pygame.K_SPACE]:
+            brilho.pula()
+            cubo.pula()
             
-
+        
 
 
 
