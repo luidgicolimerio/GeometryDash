@@ -106,7 +106,7 @@ class Brilho(pygame.sprite.Sprite):
 class Spike(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('triangulo.png')
+        self.image = pygame.image.load('imagens/triangulo.png')
         self.rect = self.image.get_rect()
         
 

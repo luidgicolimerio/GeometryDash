@@ -116,12 +116,7 @@ def main_loop(screen):
             brilho.pula()
             cubo.pula()
             
-        
-
-
-
-
-
+    
 
         # Define FPS máximo
         clock.tick(60)
