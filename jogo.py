@@ -24,14 +24,14 @@ def load():
 
 
 
-    tri = pygame.image.load('triangulo.PNG')
-    ret = pygame.image.load('retangulo.PNG')
+    tri = pygame.image.load('imagens/triangulo.PNG')
+    ret = pygame.image.load('imagens/retangulo.PNG')
     tri = pygame.transform.scale(tri, (tri.get_width()/ 2.6, tri.get_height() / 2.6))
     ret = pygame.transform.scale(ret, (ret.get_width()/ 2.6, ret.get_height() / 2.6))
 
 
 
-    fundo = pygame.image.load('Frame1.PNG').convert()
+    fundo = pygame.image.load('imagens/Frame1.PNG').convert()
     fundo_width = fundo.get_width()
     fundo_rect = fundo.get_rect()
 
@@ -64,16 +64,16 @@ def update(dt):
 
         if cubo.andando == True:
           #scroll background
-            scroll = scroll - (0.08 * dt)
-            cl1 = cl1 - (0.08 * dt)
+            scroll = scroll - (0.1 * dt)
+            cl1 = cl1 - (0.1 * dt)
 
           #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
 
 
-    pygame.draw.rect(screen, (255, 130, 130), (0, 790, 2000, 2000))
-    pygame.draw.rect(screen, (255, 100, 100), (0, 800, 2000, 2000))
+    pygame.draw.rect(screen, (255, 130, 130), (0, 790, 3000, 3000))
+    pygame.draw.rect(screen, (255, 100, 100), (0, 800, 3000, 3000))
 
     # espinho e retangulo
     screen.blit(tri, (600 + cl1, 754))
@@ -92,6 +92,7 @@ def update(dt):
 
 
 
+
 def main_loop(screen):  
     global clock, width, scroll, fundo
     running = True
@@ -105,6 +106,7 @@ def main_loop(screen):
 
             
         keys = pygame.key.get_pressed()
+
         if keys[pygame.K_UP]:
             cubo.pula()
         if keys[pygame.K_RIGHT]:
@@ -120,7 +122,7 @@ def main_loop(screen):
 
 
         # Define FPS máximo
-        clock.tick(60)        
+        clock.tick(60)
         # Calcula tempo transcorrido desde a última atualização 
         dt = clock.get_time()
         # Desenha objetos na tela 
