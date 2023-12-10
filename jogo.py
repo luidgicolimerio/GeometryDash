@@ -123,32 +123,30 @@ def update(dt):
         fundo_rect = fundo.get_rect()
 
         portal1 = pygame.image.load('imagens/PortalM1.PNG')
-        portal1 = pygame.transform.scale(portal1, (portal1.get_width()/ 1.33, portal1.get_height() / 2))
+        portal1 = pygame.transform.scale(portal1, (portal1.get_width()/ 1, portal1.get_height() / 1))
         portal2 = pygame.image.load('imagens/PortalM2.PNG')
-        portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1.33, portal2.get_height() / 2))
+        portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
 
 
         tiles = math.ceil(width  / fundo_width) + 1
+        
         for i in range(0, tiles):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
-
-
         #scroll background
             scroll = scroll - (0.1 * dt)
             cl1 = cl1 - (0.1 * dt)
             for espinho in obstaculos1:
-                espinho.update_x(movement=cl1)
+                espinho.update_x()
 
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
-        pygame.draw.rect(screen, (70, 70, 70), (0, 790, 4000, 4000))
-        pygame.draw.rect(screen, (45, 45, 45), (0, 800, 4000, 4000))
-
+        pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
+        pygame.draw.rect(screen, (45, 45, 45), (0, 740, 4000, 4000))
         obstaculos1.draw(screen)
 
-        screen.blit(portal1, (3145 + cl1, 565))
+        screen.blit(portal1, (3145 + cl1, 300))
         
 
     if fase == 2:
@@ -158,9 +156,9 @@ def update(dt):
         fundo_rect = fundo.get_rect()
 
         portal1 = pygame.image.load('imagens/PortalM3.PNG')
-        portal1 = pygame.transform.scale(portal1, (portal1.get_width()/ 1.33, portal1.get_height() / 2))
+        portal1 = pygame.transform.scale(portal1, (portal1.get_width()/ 1, portal1.get_height() / 1))
         portal2 = pygame.image.load('imagens/PortalM4.PNG')
-        portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1.33, portal2.get_height() / 2))
+        portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
 
         
         tiles = math.ceil(width  / fundo_width) + 1
@@ -175,12 +173,12 @@ def update(dt):
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
-        pygame.draw.rect(screen, (70, 70, 70), (0, 790, 4000, 4000))
-        pygame.draw.rect(screen, (45, 45, 45), (0, 800, 4000, 4000))
+        pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
+        pygame.draw.rect(screen, (45, 45, 45), (0, 740, 4000, 4000))
 
         # obstaculos2.draw(screen)
 
-        screen.blit(portal1, (3145 + cl1, 565))
+        screen.blit(portal1, (3145 + cl1, 300))
 
 
     if fase == 3:
@@ -191,9 +189,9 @@ def update(dt):
 
 
         portal1 = pygame.image.load('imagens/PortalM5.PNG')
-        portal1 = pygame.transform.scale(portal1, (portal1.get_width()/ 1.33, portal1.get_height() / 2))
+        portal1 = pygame.transform.scale(portal1, (portal1.get_width()/ 1, portal1.get_height() / 1))
         portal2 = pygame.image.load('imagens/PortalM6.PNG')
-        portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1.33, portal2.get_height() / 2))
+        portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
 
         tiles = math.ceil(width  / fundo_width) + 1
         for i in range(0, tiles):
@@ -208,11 +206,11 @@ def update(dt):
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
-        pygame.draw.rect(screen, (70, 70, 70), (0, 790, 4000, 4000))
-        pygame.draw.rect(screen, (45, 45, 45), (0, 800, 4000, 4000))
+        pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
+        pygame.draw.rect(screen, (45, 45, 45), (0, 740, 4000, 4000))
 
 
-        screen.blit(portal1, (3145 + cl1, 565))
+        screen.blit(portal1, (3145 + cl1, 300))
 
 
     pygame.draw.rect(screen, (105, 105, 105), (1120, 20, 60, 60))
@@ -223,11 +221,11 @@ def update(dt):
 
     todas_sprites.draw(screen)
     if fase == 1:
-        screen.blit(portal2, (3275 + cl1, 565))
+        screen.blit(portal2, (3275 + cl1, 300))
     if fase == 2:
-        screen.blit(portal2, (3275 + cl1, 565))
+        screen.blit(portal2, (3275 + cl1, 300))
     if fase == 3:
-        screen.blit(portal2, (3275 + cl1, 565))
+        screen.blit(portal2, (3275 + cl1, 300))
     todas_sprites.update()
     pygame.display.flip()
 
@@ -308,10 +306,6 @@ def main_loop(screen):
         if keys[pygame.K_DOWN]:
             brilho.pula()
             cubo.desce()
-        if keys[pygame.K_RIGHT]:
-            brilho.andar()
-        else:
-            brilho.parado()
         
         if keys[pygame.K_UP]:
             brilho.pula()

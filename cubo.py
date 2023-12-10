@@ -146,16 +146,22 @@ class Spike(pygame.sprite.Sprite):
             self.image = pygame.image.load('imagens/EspinhoVB.png')
         elif tipo == 'k':
             self.image = pygame.image.load('imagens/EspinhoVC.png')
+        elif tipo == 'l':
+            self.image = pygame.image.load('imagens/MuroC.png')
+        elif tipo == 'm':
+            self.image = pygame.image.load('imagens/MuroB.png')
         
 
-        self.image = pygame.transform.scale(self.image, (self.image.get_width()/ 2, self.image.get_height() / 2))
+        self.image = pygame.transform.scale(self.image, (self.image.get_width()/ 1.5, self.image.get_height() / 1.5))
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.topleft = (x, y)
 
 
-    def update_x(self, movement):
-        self.rect.x += movement / 100
+
+    def update_x(self):
+        #for i in range()
+        self.rect.x -= 3.2
 
         
 
@@ -164,20 +170,29 @@ class Spike(pygame.sprite.Sprite):
 obstaculos1 = pygame.sprite.Group()
 
 obstaculos1.add(Spike(x=600, y=0, tipo='a'))
-obstaculos1.add(Spike(x=800, y=0, tipo='e'))
-# obstaculos1.add(Spike(x=800, y=754))
-# obstaculos1.add(Spike(x=1000, y=754))
-# obstaculos1.add(Spike(x=1200, y=754))
-# obstaculos1.add(Spike(x=1603, y=580))
-# obstaculos1.add(Spike(x=1753, y=754))
-# obstaculos1.add(Spike(x=1798, y=754))
-# obstaculos1.add(Spike(x=1843, y=754))
-# obstaculos1.add(Spike(x=2348, y=754))
+obstaculos1.add(Spike(x=760, y=0, tipo='e'))
+obstaculos1.add(Spike(x=880, y=600, tipo='k'))
+obstaculos1.add(Spike(x=1300, y=533, tipo='f'))
+obstaculos1.add(Spike(x=1635, y=667, tipo='b'))
+obstaculos1.add(Spike(x=2000, y=40, tipo='j'))
+obstaculos1.add(Spike(x=2800, y=40, tipo='j'))
+obstaculos1.add(Spike(x=2400, y=600, tipo='k'))
+obstaculos1.add(Spike(x=3200, y=600, tipo='k'))
+obstaculos1.add(Spike(x=3080, y=0, tipo='e'))
+obstaculos1.add(Spike(x=3600, y=40, tipo='j'))
+
+# MOEDAS FASE 1 (940, "300") (2100, 60) (3100, 540)
 
 
-# # Fase 2
-# # Espinhos 
-# obstaculos2 = pygame.sprite.Group()
+
+
+
+# Fase 2
+# Espinhos 
+obstaculos2 = pygame.sprite.Group()
+
+obstaculos2.add(Spike(x=600, y=754, tipo='l'))
+
 
 # obstaculos2.add(Spike(x=600, y=754))
 # obstaculos2.add(Spike(x=632, y=754))
