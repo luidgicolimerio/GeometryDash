@@ -123,12 +123,19 @@ def update(dt):
 
 
 
+<<<<<<< HEAD
     # MUDANÇA DE FASE
     while i <= 2:
         if cl1 <= -3000 and fase < 3:
             fase += 1
             cl1 = 0
         i += 1
+=======
+        if brilho.andando == True:
+          #scroll background
+            scroll = scroll - (0.1 * dt)
+            cl1 = cl1 - (0.1 * dt)
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
 
 
 
@@ -432,15 +439,29 @@ def main_loop(screen):
 
             
         keys = pygame.key.get_pressed()
+<<<<<<< HEAD
+=======
+
+        if keys[pygame.K_UP]:
+            brilho.pula()
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
         if keys[pygame.K_RIGHT]:
             brilho.andar()
         else:
             brilho.parado()
         
+<<<<<<< HEAD
         if keys[pygame.K_UP]:
             brilho.pula()
             cubo.pula()
             
+=======
+        if keys[pygame.K_SPACE]:
+            brilho.pula()
+            cubo.pula()
+            
+    
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
 
         # Define FPS máximo
         clock.tick(60)

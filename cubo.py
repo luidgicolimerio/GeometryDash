@@ -20,7 +20,11 @@ class Cubo(pygame.sprite.Sprite):
 
         self.pulando = False
 
+<<<<<<< HEAD
         self.gravity = 0.7
+=======
+        self.gravity = 0.6
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
         self.heigth = 12
         self.velocity = self.heigth
     
@@ -29,14 +33,21 @@ class Cubo(pygame.sprite.Sprite):
 
     def update(self):
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
         if self.pulando:
             self.pos_y -= self.velocity
             self.velocity -= self.gravity
             self.rect.topleft = self.pos_x, self.pos_y
             if self.velocity < -self.heigth:
                 self.pulando = False
+<<<<<<< HEAD
                 self.gravity = 0.7
+=======
+                self.gravity = 0.6
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
                 self.heigth = 12
                 self.velocity = self.heigth
                 self.pos_y = 742
@@ -83,6 +94,7 @@ class Brilho(pygame.sprite.Sprite):
     def update(self):
 
         if self.andando:
+<<<<<<< HEAD
             if self.pos_y >= 742:
                 if self.atual >= 4:
                     self.atual = 1
@@ -92,6 +104,16 @@ class Brilho(pygame.sprite.Sprite):
             else:
                 self.image = self.sprites_anda[0]
 
+=======
+            if self.pos_y == 742:
+                if self.atual >= 4:
+                    self.atual = 1
+                    self.andando = False
+                self.atual += 0.05
+                self.image = self.sprites_anda[int(self.atual)]
+            else:
+                self.image = self.sprites_anda[0]
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
 
         if self.pulando:
             self.pos_y -= self.velocity
@@ -108,7 +130,11 @@ class Brilho(pygame.sprite.Sprite):
 class Spike(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+<<<<<<< HEAD
         self.image = pygame.image.load('imagens/triangulo1.png')
+=======
+        self.image = pygame.image.load('imagens/triangulo.png')
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
         self.rect = self.image.get_rect()
         
 
@@ -120,4 +146,9 @@ brilho = Brilho()
 cubo = Cubo()
 spike = Spike()
 todas_sprites.add(brilho)
+<<<<<<< HEAD
 todas_sprites.add(cubo)
+=======
+todas_sprites.add(cubo)
+
+>>>>>>> 782ea1b8e92f72237d2a08272398bdeaef98eaac
