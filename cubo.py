@@ -8,12 +8,15 @@ class Cubo(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.sprites = []
-        self.sprites.append(pygame.image.load('Sprites/Pulo/pulo_0.png'))
+        self.sprites.append(pygame.image.load('Sprites/Morte/alien.png'))
+        self.sprites.append(pygame.image.load('Sprites/Morte/morte1.png'))
+        self.sprites.append(pygame.image.load('Sprites/Morte/morte2.png'))
+        self.sprites.append(pygame.image.load('Sprites/Morte/morte3.png'))
         self.atual = 0
         self.image = self.sprites[self.atual]
-
+        self.image = pygame.transform.scale(self.image, (self.image.get_width()/ 2, self.image.get_height() / 2))
         self.pos_x = 300
-        self.pos_y = 500
+        self.pos_y = 300
 
         self.rect = self.image.get_rect()
         self.rect.topleft = self.pos_x, self.pos_y
@@ -32,7 +35,15 @@ class Cubo(pygame.sprite.Sprite):
     def desce(self):
         cubo.descendo = True
     def colisao(self):
-        ...
+        self.morre = True
+        self.image = self.sprites[1]
+        if self.morre:
+            if self.atual >= 4:
+                self.atual = 1
+                self.morre = False
+            self.atual += 0.2
+            self.image = self.sprites[int(self.atual)]
+
 
     def update(self):
         if self.subindo :
@@ -63,12 +74,6 @@ class Brilho(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.sprites_anda = []
-        self.sprites_anda.append(pygame.image.load('Sprites/Andar/nada.png'))
-        self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_0.png'))
-        self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_1.png'))
-        self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_2.png'))
-        self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_3.png'))
-        self.sprites_anda.append(pygame.image.load('Sprites/Andar/sprite_4.png'))
         self.atual = 0
         self.image = self.sprites_anda[self.atual]
 
@@ -107,7 +112,6 @@ class Brilho(pygame.sprite.Sprite):
                 self.image = self.sprites_anda[int(self.atual)]
             else:
                 self.image = self.sprites_anda[0]
-
 
         if self.pulando:
             self.pos_y -= self.velocity
@@ -152,10 +156,11 @@ class Spike(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.topleft = (x, y)
+        self.movement = 5
 
 
-    def update_x(self, movement):
-        self.rect.x += movement / 100
+    def update_x(self):
+        self.rect.x -= self.movement
 
         
 
@@ -210,7 +215,5 @@ obstaculos1.add(Spike(x=800, y=0, tipo='e'))
 # obstaculos3.add(Spike(x=1439, y=690))
 
 todas_sprites = pygame.sprite.Group()
-brilho = Brilho()
 cubo = Cubo()
-todas_sprites.add(brilho)
 todas_sprites.add(cubo)

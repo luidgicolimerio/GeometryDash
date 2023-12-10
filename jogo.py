@@ -2,7 +2,7 @@ import pygame
 import math
 from pygame.locals import *
 from sys import exit
-from cubo import todas_sprites, brilho, cubo, obstaculos1
+from cubo import todas_sprites, cubo, obstaculos1
 
 
 width = 1200
@@ -24,7 +24,7 @@ def load():
     play = False
     sair = True
 
-    quad = pygame.image.load('Sprites/Pulo/pulo_0.png')
+    quad = pygame.image.load('Sprites/Morte/alien.png')
     quad = pygame.transform.scale(quad, (quad.get_width()* 3, quad.get_height() * 3))
     inicio = pygame.image.load('imagens/inicio.PNG')
 
@@ -138,7 +138,7 @@ def update(dt):
             scroll = scroll - (0.1 * dt)
             cl1 = cl1 - (0.1 * dt)
             for espinho in obstaculos1:
-                espinho.update_x(movement=cl1)
+                espinho.update_x()
 
         #reset scroll
         if abs(scroll) > fundo_width:
@@ -168,10 +168,10 @@ def update(dt):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
 
-            if brilho.andando == True:
-            #scroll background
-                scroll = scroll - (0.1 * dt)
-                cl1 = cl1 - (0.1 * dt)
+
+        #scroll background
+            scroll = scroll - (0.1 * dt)
+            cl1 = cl1 - (0.1 * dt)
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
@@ -200,10 +200,10 @@ def update(dt):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
 
-            if brilho.andando == True:
-            #scroll background
-                scroll = scroll - (0.1 * dt)
-                cl1 = cl1 - (0.1 * dt)
+
+        #scroll background
+            scroll = scroll - (0.1 * dt)
+            cl1 = cl1 - (0.1 * dt)
 
         #reset scroll
         if abs(scroll) > fundo_width:
@@ -303,25 +303,15 @@ def main_loop(screen):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
-            brilho.pula()
             cubo.sobe()
         if keys[pygame.K_DOWN]:
-            brilho.pula()
             cubo.desce()
-        if keys[pygame.K_RIGHT]:
-            brilho.andar()
-        else:
-            brilho.parado()
-        
-        if keys[pygame.K_UP]:
-            brilho.pula()
-
 
 
         collision_sprites = check_collision(cubo, obstaculos1)
         if collision_sprites:
-            ...
-            # print("Colisão detectada!")
+            cubo.colisao()
+            print("Colisão detectada!")
 
         # Define FPS máximo
         clock.tick(60)
