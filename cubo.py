@@ -32,6 +32,7 @@ class Cubo(pygame.sprite.Sprite):
         self.morre = False
         self.perdeu = False
         self.pontos = 0
+        self.tentativas = 1
     
     def sobe(self):
         cubo.subindo = True
@@ -39,10 +40,11 @@ class Cubo(pygame.sprite.Sprite):
         cubo.descendo = True
     def colisao(self):
         self.morre = True
+        self.tentativas += 1
         self.image = self.sprites[1]
     def moeda(self):
         self.pontos += 1
-        print(self.pontos)
+        
 
 
 
