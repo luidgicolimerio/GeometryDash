@@ -221,9 +221,8 @@ def fase1():
     coins1.add(Coin(x=900, y=200))
     coins1.add(Coin(x=2100, y=60))
     coins1.add(Coin(x=3400, y=540))
-    # MOEDAS FASE 1 (940, "300") (2100, 60) (3100, 540)
 
-    return [obstaculos1, coins1]
+    return obstaculos1, coins1
 
 # Fase 2
 # Espinhos 
@@ -231,6 +230,7 @@ def fase2():
 
     obstaculos2 = None
     obstaculos2 = pygame.sprite.Group()
+    coins2 = pygame.sprite.Group()
 
 
     obstaculos2.add(Spike(x=750, y=130, tipo='c'))
@@ -257,7 +257,11 @@ def fase2():
     obstaculos2.add(Spike(x=4200, y=500, tipo='n'))
     obstaculos2.add(Spike(x=4200, y=625, tipo='n'))
 
-    return obstaculos2
+    coins2.add(Coin(x=1370, y=110))
+    coins2.add(Coin(x=2800, y=200))
+    coins2.add(Coin(x=3750, y=395))
+
+    return obstaculos2, coins2
 
 
 # Fase 3
@@ -267,6 +271,7 @@ def fase3():
 
     obstaculos3 = None
     obstaculos3 = pygame.sprite.Group()
+    coins3 = pygame.sprite.Group()
 
     obstaculos3.add(Spike(x=800, y=580, tipo='h'))
     obstaculos3.add(Spike(x=800, y=20, tipo='h'))
@@ -275,16 +280,13 @@ def fase3():
     obstaculos3.add(Spike(x=950, y=310, tipo='i'))
     obstaculos3.add(Spike(x=1300, y=160, tipo='i'))
     obstaculos3.add(Spike(x=1300, y=460, tipo='i'))
-    # moeda (1455, 180)
     obstaculos3.add(Spike(x=1670, y=150, tipo='i'))
     obstaculos3.add(Spike(x=1750, y=240, tipo='i'))
     obstaculos3.add(Spike(x=1810, y=340, tipo='i'))
     obstaculos3.add(Spike(x=2070, y=150, tipo='i'))
     obstaculos3.add(Spike(x=2070, y=480, tipo='i'))
-    #moeda (2270, 500)
     obstaculos3.add(Spike(x=2520, y=200, tipo='i'))
     obstaculos3.add(Spike(x=2520, y=500, tipo='i'))
-    # moeda (2670, 220)
     obstaculos3.add(Spike(x=2820, y=150, tipo='i'))
     obstaculos3.add(Spike(x=2820, y=400, tipo='i'))
     obstaculos3.add(Spike(x=2820, y=500, tipo='i'))
@@ -292,8 +294,13 @@ def fase3():
     obstaculos3.add(Spike(x=3320, y=200, tipo='i'))
     obstaculos3.add(Spike(x=3420, y=400, tipo='i'))
     obstaculos3.add(Spike(x=3620, y=300, tipo='i'))
-    # moeda ( 3750, 300)
-    return obstaculos3
+
+    coins3.add(Coin(x=1455, y=180))
+    coins3.add(Coin(x=2270, y=500))
+    coins3.add(Coin(x=2670, y=220))
+    coins3.add(Coin(x=3750, y=300))
+
+    return obstaculos3, coins3
 
 
 todas_sprites = pygame.sprite.Group()

@@ -10,7 +10,7 @@ height = 900
 
 
 def load():
-    global sys_font, rankk, k, ranking, Tfinal, py, color_active, color_inactive, color, active, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
+    global sys_font, rankk, k, ranking, Tfinal, py, color_active, color_inactive, color, active, text_area, obstaculos1, coins1, coins2, coins3, obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
 
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
@@ -19,7 +19,7 @@ def load():
     py = 0
     x = 0
     cl1 = 0
-    cl = 0
+    cl = 3
     fase = 3
     i = 0
     scroll = 0
@@ -32,14 +32,14 @@ def load():
     l1 = fase1()
     obstaculos1, coins1 = l1
     l2 = fase2()
-    obstaculos2 = l2
+    obstaculos2, coins2 = l2
     l3 =fase3()
-    obstaculos3 = l3
+    obstaculos3, coins3 = l3
 
-    ranking = [['josé', 25, 10], ['luidgi', 24, 10], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
-               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
-               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
-               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]]
+    # ranking = [['josé', 25, 10], ['luidgi', 24, 10], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
+    #            , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
+    #            , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
+    #            , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]]
 
 
     # Campo de Entrada de Texto
@@ -91,13 +91,9 @@ def rank(screen):
             if i >= 9:
                 break
 
-
-
     fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
     t = fonte.render("Retornar", True, (219, 225, 0))
     screen.blit(t, (45,205))
-
-
 
 
 def start(screen):
@@ -128,14 +124,11 @@ def start(screen):
     screen.blit(text_surface, (text_area.x + 5, text_area.y + 5))
 
 
-    #pygame.draw.rect(screen, (0,0,0), (884, 425, 150, 150))
-    
-
 
 
 
 def game_over(screen):
-    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p, obstaculos1, obstaculos2, obstaculos3, coins1, nome_jogador, fase, k
+    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p, obstaculos1, obstaculos2, obstaculos3, coins1, coins2, coins3, nome_jogador, fase, k
     screen.fill((0,0,0))
     if k:
         ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
@@ -161,21 +154,11 @@ def game_over(screen):
         l1 = fase1()
         obstaculos1, coins1 = l1
         l2 = fase2()
-        obstaculos2 = l2
+        obstaculos2, coins2 = l2
         l3 = fase3()
-        obstaculos3 = l3
+        obstaculos3, coins3 = l3
         
         
-        
-
-
-
-
-
-
-
-
-
 def final(screen):
     global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, x, nome_jogador, fase, k
     screen.fill((0,0,0))
@@ -199,6 +182,11 @@ def final(screen):
             x = 2
     if x == 2:
         screen.blit(Tfinal, (0,0))
+
+        fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
+        t = fonte.render("Sair", True, (219, 225, 0))
+        screen.blit(t, (1065,795))
+
 
 
 def update(dt):
@@ -271,9 +259,12 @@ def update(dt):
         portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
 
         collision_sprites = check_collision(cubo, obstaculos2)
+        collision_coins = check_collision_coin(cubo, coins2)
         if collision_sprites:
             cubo.colisao()
 
+        if collision_coins:
+            cubo.moeda()
         
 
 
@@ -289,7 +280,8 @@ def update(dt):
             cl1 = cl1 - (0.15 * dt)
             for espinho in obstaculos2:
                 espinho.update_x()
-
+            for coin in coins2:
+                coin.update_x()
 
         #reset scroll
         if abs(scroll) > fundo_width:
@@ -297,6 +289,7 @@ def update(dt):
         pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
         pygame.draw.rect(screen, (45, 45, 45), (0, 740, 4000, 4000))
 
+        coins2.draw(screen)
         obstaculos2.draw(screen)
 
         screen.blit(portal1, (4375 + cl1, 150))
@@ -315,8 +308,11 @@ def update(dt):
         portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
 
         collision_sprites = check_collision(cubo, obstaculos3)
+        collision_coins = check_collision_coin(cubo, coins3)
         if collision_sprites:
             cubo.colisao()
+        if collision_coins:
+            cubo.moeda()
 
 
 
@@ -327,6 +323,8 @@ def update(dt):
             fundo_rect.x = i * fundo_width + scroll
             for espinho in obstaculos3:
                 espinho.update_x()
+            for coin in coins3:
+                coin.update_x()
 
         #scroll background
             scroll = scroll - (0.15 * dt)
@@ -338,6 +336,7 @@ def update(dt):
         pygame.draw.rect(screen, (70, 70, 70), (0, 730, 5000, 4000))
         pygame.draw.rect(screen, (45, 45, 45), (0, 740, 5000, 4000))
 
+        coins3.draw(screen)
         obstaculos3.draw(screen)
 
         screen.blit(portal1, (4375 + cl1, 150))
@@ -404,14 +403,14 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             active = False
         if check_click(50, 33, 150, 150, px_mouse, py_mouse):
                 rankk = False
-                print('a')
         if check_click(884, 425, 150, 150, px_mouse, py_mouse):
-            if play == False or (play == True and sair == True):
+            if play == False:
                 rankk = True
                 py = 0
-            
-
-
+        if check_click(1027, 29, 150, 150, px_mouse, py_mouse):
+            if play == True and sair == True:
+                rankk = True
+                py = 0
 def main_loop(screen):  
     global clock, voltar,rankk, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text, nome_jogador
     running = True
@@ -491,7 +490,6 @@ def main_loop(screen):
 
             cubo.pos_y -= 0
             cl1 = 0
-            cubo.pos_y = 300
             scroll = 0
             for espinho in obstaculos2:
                 espinho.movement = 0
