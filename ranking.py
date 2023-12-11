@@ -7,7 +7,6 @@ def busca(nome, lista):
     return None
 def cadastra_historico(nome, moeda, level):
     global arql
-    print('cadastrei')
     
     i = busca(nome, arql)
     if i != None:
@@ -18,7 +17,6 @@ def cadastra_historico(nome, moeda, level):
     
 def escrve():
     global arql
-    print('escrevi')
     arqS = open('ranking.txt', 'w')
 
     for jogador in arql:

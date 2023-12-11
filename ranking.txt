@@ -1,2 +1,12 @@
-Luidgi, 1
+Luidgi, 3
 2,3
+2,3
+2,3
+Jose, 1
+0,1
+roger, 1
+0,2
+Teu, 1
+3,3
+zeus, 1
+1,3

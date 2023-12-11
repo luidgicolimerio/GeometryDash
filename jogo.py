@@ -223,7 +223,8 @@ def update(dt):
         collision_coins = check_collision_coin(cubo, coins1)
         if collision_sprites:
             cubo.colisao()
-
+        if collision_coins:
+            cubo.moeda()
 
         tiles = math.ceil(width  / fundo_width) + 1
         
