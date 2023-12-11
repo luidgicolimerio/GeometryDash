@@ -68,6 +68,10 @@ def start(screen):
     t = font.render("sair do jogo", True, (0,0,0))
     screen.blit(t, (495,705))
 
+def game_over(screen):
+    screen.fill((0,0,0))
+    print('PERDEUUUU')
+
 
 def final(screen):
     global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, x
@@ -114,7 +118,6 @@ def update(dt):
             cl1 = 0
         i += 1
 
-
     # espinho e retangulo da FASE 1, 2, 3
     if fase == 1:
 
@@ -134,8 +137,8 @@ def update(dt):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
         #scroll background
-            scroll = scroll - (0.1 * dt)
-            cl1 = cl1 - (0.1 * dt)
+            scroll = scroll - (0.15 * dt)
+            cl1 = cl1 - (0.15 * dt)
             for espinho in obstaculos1:
                 espinho.update_x()
 
@@ -309,12 +312,16 @@ def main_loop(screen):
         collision_sprites = check_collision(cubo, obstaculos1)
         if collision_sprites:
             cubo.colisao()
+
             print("Colisão detectada!")
 
         # Define FPS máximo
         clock.tick(60)
         # Calcula tempo transcorrido desde a última atualização 
         dt = clock.get_time()
+
+        if cubo.perdeu:
+            game_over(screen)
 
         if fase == 3 and cl1 <= -3000:
             sair = True

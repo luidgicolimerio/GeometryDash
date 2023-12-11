@@ -8,13 +8,13 @@ class Cubo(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.sprites = []
-        self.sprites.append(pygame.image.load('Sprites/Morte/alien.png'))
         self.sprites.append(pygame.image.load('Sprites/Morte/morte1.png'))
         self.sprites.append(pygame.image.load('Sprites/Morte/morte2.png'))
         self.sprites.append(pygame.image.load('Sprites/Morte/morte3.png'))
         self.atual = 0
-        self.image = self.sprites[self.atual]
-        self.image = pygame.transform.scale(self.image, (self.image.get_width()/ 2, self.image.get_height() / 2))
+        self.personagem = pygame.image.load('Sprites/Morte/alien.png')
+        self.personagem = pygame.transform.scale(self.personagem, (self.personagem.get_width()/ 2, self.personagem.get_height() / 2))
+        self.image = self.personagem
         self.pos_x = 300
         self.pos_y = 300
 
@@ -29,6 +29,8 @@ class Cubo(pygame.sprite.Sprite):
         self.velocity = self.heigth
         self.subindo = False
         self.descendo = False
+        self.morre = False
+        self.perdeu = False
     
     def sobe(self):
         cubo.subindo = True
@@ -37,12 +39,7 @@ class Cubo(pygame.sprite.Sprite):
     def colisao(self):
         self.morre = True
         self.image = self.sprites[1]
-        if self.morre:
-            if self.atual >= 4:
-                self.atual = 1
-                self.morre = False
-            self.atual += 0.2
-            self.image = self.sprites[int(self.atual)]
+
 
 
     def update(self):
@@ -54,6 +51,16 @@ class Cubo(pygame.sprite.Sprite):
             self.pos_y += 6
             self.rect.topleft = self.pos_x, self.pos_y
             self.descendo = False
+
+        if self.morre:
+            self.atual += 0.2
+            try:
+                self.image = self.sprites[int(self.atual)]
+            except:
+                self.perdeu = True
+                self.morre = False
+                self.image = self.personagem
+
     
         # if self.pulando:
         #     self.gravity = 0.5
@@ -160,7 +167,7 @@ class Spike(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.topleft = (x, y)
-        self.movement = 3.2
+        self.movement = 5
 
 
     def update_x(self):
