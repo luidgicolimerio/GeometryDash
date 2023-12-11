@@ -28,8 +28,30 @@ def escrve():
         for tentativa in range(tentativas):
             moedas = jogador[2][0]
             level = jogador[2][1]
-            arqS.write(f'{moedas},{level}\n' )
+            arqS.write(f'{moedas},{tentativas}\n' )
     arqS.close()
+def abre():
+    arqE = open('ranking.txt', 'r')
+    ranking = []
+
+    for linha in arqE:
+        linha = linha.strip().split(',')
+        nome = linha[0]
+        tentativas = int(linha[1])
+        maior_fase = 1
+        for tentativa in range(tentativas):
+            linha = arqE.readline().strip().split(',')
+            moedas = linha[0]
+            level = int(linha[1])
+            if level > maior_fase:
+                maior_fase = level
+        ranking.append([nome, moedas, maior_fase])
+
+    ordenado = sorted(ranking, key=lambda x: x[1], reverse=True)
+    arqE.close()
+    
+    return ordenado
+
 
 arqE = open('ranking.txt', 'r')
 arql = []
