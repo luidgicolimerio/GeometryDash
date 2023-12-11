@@ -2,15 +2,14 @@ import pygame
 import math
 from pygame.locals import *
 from sys import exit
-from cubo import todas_sprites, cubo, obstaculos1, obstaculos2, obstaculos3, coins1
-
+from cubo import todas_sprites, cubo, fase1, fase2, fase3
 
 width = 1200
 height = 900
 
 
 def load():
-    global sys_font, clock, x, cl1, cl, i, scroll, fase, play, quad, font, sair, inicio, p
+    global sys_font, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
     font = pygame.font.Font(pygame.font.get_default_font(), 35)
@@ -24,13 +23,20 @@ def load():
     p = 0
     play = False
     sair = True
+    voltar = False
+    l1 = fase1()
+    obstaculos1, coins1 = l1
+    l2 = fase2()
+    obstaculos2 = l2
+    l3 =fase3()
+    obstaculos3 = l3
 
 
 
     quad = pygame.image.load('Sprites/Morte/alien.png')
     quad = pygame.transform.scale(quad, (quad.get_width()* 3, quad.get_height() * 3))
     inicio = pygame.image.load('imagens/TelaInicial.PNG')
-
+    over = pygame.image.load('imagens/GameOver.PNG')
 
 def draw_screen(screen):
     global cl1, cl2, cl3, cl, fundo, tri, ret
@@ -78,8 +84,9 @@ def start(screen):
 
 
 
+
 def game_over(screen):
-    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p
+    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p, obstaculos1, obstaculos2, obstaculos3, coins1
     screen.fill((0,0,0))
     while p < 1:
         fade_img = pygame.Surface((1200,900)).convert_alpha()
@@ -91,9 +98,21 @@ def game_over(screen):
         fade_alpha -= 1
         fade_img.set_alpha(fade_alpha)
         screen.blit(fade_img, fade)
-        if fade_alpha == 0:
+        if fade_alpha <= 0: 
             p = 2
-    #if p == 2:
+        
+    if p == 2:
+
+        screen.blit(over, (0, 0))
+        l1 = fase1()
+        obstaculos1, coins1 = l1
+        l2 = fase2()
+        obstaculos2 = l2
+        l3 =fase3()
+        obstaculos3 = l3
+        
+
+
 
 
 
@@ -114,7 +133,7 @@ def final(screen):
         fade_alpha -= 1
         fade_img.set_alpha(fade_alpha)
         screen.blit(fade_img, fade)
-        if fade_alpha == 0:
+        if fade_alpha <= 0:
             x = 2
     if x == 2:
         screen.blit(inicio, (0,0))
@@ -312,7 +331,7 @@ def mouse_click_up(px_mouse, py_mouse, mouse_buttons):
 def keyboard_keyup(keys):
     pass
 def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
-    global play, sair
+    global play, sair, voltar, cl1
     if mouse_buttons[0]: # left
         if check_click(432.8, 470, 334.4, 110, px_mouse, py_mouse):
             play = True
@@ -325,7 +344,11 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             if x == 2:
                 play = False
                 sair = False
-        
+        if check_click(518, 603, 150, 150, px_mouse, py_mouse):
+            voltar = True
+            cl1 = 0
+            cubo.perdeu = False
+
 
     elif mouse_buttons[2]: # right
         if check_click(432.8, 470, 334.4, 110, px_mouse, py_mouse):
@@ -339,10 +362,15 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             if x == 2:
                 play = False
                 sair = False
+        if check_click(518, 603, 150, 150, px_mouse, py_mouse):
+            voltar = True
+            cl1 = 0
+            cubo.perdeu = False
+
 
 
 def main_loop(screen):  
-    global clock, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1
+    global voltar, clock, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1
     running = True
 
     
@@ -386,6 +414,8 @@ def main_loop(screen):
 
 
         if cubo.perdeu == False:
+            voltar = False
+
             if fase == 3 and cl1 <= -4230:
                 sair = True
                 play = True
@@ -397,12 +427,16 @@ def main_loop(screen):
                 if play == True:
                     update(dt)
         else:
+
             cubo.pos_y -= 0
             cl1 = 0
+            cubo.pos_y = 300
             scroll = 0
             for espinho in obstaculos2:
                 espinho.movement = 0
             game_over(screen)
+                        
+            
 
 
 
