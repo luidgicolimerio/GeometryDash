@@ -2,7 +2,7 @@ import pygame
 import math
 from pygame.locals import *
 from sys import exit
-from cubo import todas_sprites, cubo, obstaculos1
+from cubo import todas_sprites, cubo, obstaculos1, obstaculos2, obstaculos3
 
 
 width = 1200
@@ -18,7 +18,7 @@ def load():
     x = 0
     cl1 = 0
     cl = 0
-    fase = 1
+    fase = 3
     i = 0
     scroll = 0
     play = False
@@ -109,7 +109,7 @@ def update(dt):
 
     # MUDANÇA DE FASE
     while i <= 2:
-        if cl1 <= -3000 and fase < 3:
+        if cl1 <= -4130 and fase < 3:
             fase += 1
             cl1 = 0
         i += 1
@@ -126,6 +126,13 @@ def update(dt):
         portal1 = pygame.transform.scale(portal1, (portal1.get_width()/ 1, portal1.get_height() / 1))
         portal2 = pygame.image.load('imagens/PortalM2.PNG')
         portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
+        
+        
+        collision_sprites = check_collision(cubo, obstaculos1)
+        if collision_sprites:
+            cubo.colisao()
+            print("Colisão detectada!")
+        
 
 
         tiles = math.ceil(width  / fundo_width) + 1
@@ -134,19 +141,19 @@ def update(dt):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
         #scroll background
-            scroll = scroll - (0.1 * dt)
-            cl1 = cl1 - (0.1 * dt)
+            scroll = scroll - (0.15 * dt)
+            cl1 = cl1 - (0.15 * dt)
             for espinho in obstaculos1:
                 espinho.update_x()
 
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
-        pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
-        pygame.draw.rect(screen, (45, 45, 45), (0, 740, 4000, 4000))
+        pygame.draw.rect(screen, (70, 70, 70), (0, 730, 5000, 4000))
+        pygame.draw.rect(screen, (45, 45, 45), (0, 740, 5000, 4000))
         obstaculos1.draw(screen)
 
-        screen.blit(portal1, (3145 + cl1, 300))
+        screen.blit(portal1, (4275 + cl1, 150))
         
 
     if fase == 2:
@@ -160,7 +167,14 @@ def update(dt):
         portal2 = pygame.image.load('imagens/PortalM4.PNG')
         portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
 
+        collision_sprites = check_collision(cubo, obstaculos2)
+        if collision_sprites:
+            cubo.colisao()
+            print("Colisão detectada!")
         
+
+
+
         tiles = math.ceil(width  / fundo_width) + 1
         for i in range(0, tiles):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
@@ -168,20 +182,27 @@ def update(dt):
 
 
         #scroll background
-            scroll = scroll - (0.1 * dt)
-            cl1 = cl1 - (0.1 * dt)
+            scroll = scroll - (0.15 * dt)
+            cl1 = cl1 - (0.15 * dt)
+            for espinho in obstaculos2:
+                espinho.update_x()
+
+
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
         pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
         pygame.draw.rect(screen, (45, 45, 45), (0, 740, 4000, 4000))
 
-        # obstaculos2.draw(screen)
+        obstaculos2.draw(screen)
 
-        screen.blit(portal1, (3145 + cl1, 300))
+        screen.blit(portal1, (4275 + cl1, 150))
 
 
     if fase == 3:
+
+        
+
 
         fundo = pygame.image.load('imagens/Frame3.PNG').convert()
         fundo_width = fundo.get_width()
@@ -193,24 +214,34 @@ def update(dt):
         portal2 = pygame.image.load('imagens/PortalM6.PNG')
         portal2 = pygame.transform.scale(portal2, (portal2.get_width()/ 1, portal2.get_height() / 1))
 
+        collision_sprites = check_collision(cubo, obstaculos3)
+        if collision_sprites:
+            cubo.colisao()
+            print("Colisão detectada!")
+        
+
+
+
         tiles = math.ceil(width  / fundo_width) + 1
         for i in range(0, tiles):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
-
+            for espinho in obstaculos3:
+                espinho.update_x()
 
         #scroll background
-            scroll = scroll - (0.1 * dt)
-            cl1 = cl1 - (0.1 * dt)
+            scroll = scroll - (0.15 * dt)
+            cl1 = cl1 - (0.15 * dt)
 
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
-        pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
-        pygame.draw.rect(screen, (45, 45, 45), (0, 740, 4000, 4000))
+        pygame.draw.rect(screen, (70, 70, 70), (0, 730, 5000, 4000))
+        pygame.draw.rect(screen, (45, 45, 45), (0, 740, 5000, 4000))
 
+        obstaculos3.draw(screen)
 
-        screen.blit(portal1, (3145 + cl1, 300))
+        screen.blit(portal1, (4275 + cl1, 150))
 
 
     pygame.draw.rect(screen, (105, 105, 105), (1120, 20, 60, 60))
@@ -221,11 +252,11 @@ def update(dt):
 
     todas_sprites.draw(screen)
     if fase == 1:
-        screen.blit(portal2, (3275 + cl1, 300))
+        screen.blit(portal2, (4495 + cl1, 150))
     if fase == 2:
-        screen.blit(portal2, (3275 + cl1, 300))
+        screen.blit(portal2, (4495 + cl1, 150))
     if fase == 3:
-        screen.blit(portal2, (3275 + cl1, 300))
+        screen.blit(portal2, (4495 + cl1, 150))
     todas_sprites.update()
     pygame.display.flip()
 
@@ -310,13 +341,15 @@ def main_loop(screen):
         if collision_sprites:
             cubo.colisao()
             print("Colisão detectada!")
+        
+        
 
         # Define FPS máximo
         clock.tick(60)
         # Calcula tempo transcorrido desde a última atualização 
         dt = clock.get_time()
 
-        if fase == 3 and cl1 <= -3000:
+        if fase == 3 and cl1 <= -4130:
             sair = True
             play = True
             final(screen)

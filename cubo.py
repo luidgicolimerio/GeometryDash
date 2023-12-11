@@ -47,11 +47,11 @@ class Cubo(pygame.sprite.Sprite):
 
     def update(self):
         if self.subindo :
-            self.pos_y -= 6
+            self.pos_y -= 7
             self.rect.topleft = self.pos_x, self.pos_y
             self.subindo = False
         if self.descendo:
-            self.pos_y += 6
+            self.pos_y += 7
             self.rect.topleft = self.pos_x, self.pos_y
             self.descendo = False
     
@@ -154,13 +154,15 @@ class Spike(pygame.sprite.Sprite):
             self.image = pygame.image.load('imagens/MuroC.png')
         elif tipo == 'm':
             self.image = pygame.image.load('imagens/MuroB.png')
+        elif tipo == 'n':
+            self.image = pygame.image.load('imagens/EspinhoHC.png')
         
 
         self.image = pygame.transform.scale(self.image, (self.image.get_width()/ 1.5, self.image.get_height() / 1.5))
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.topleft = (x, y)
-        self.movement = 3.2
+        self.movement = 5
 
 
     def update_x(self):
@@ -174,15 +176,15 @@ obstaculos1 = pygame.sprite.Group()
 
 obstaculos1.add(Spike(x=600, y=0, tipo='a'))
 obstaculos1.add(Spike(x=760, y=0, tipo='e'))
-obstaculos1.add(Spike(x=880, y=600, tipo='k'))
+obstaculos1.add(Spike(x=880, y=450, tipo='k'))
 obstaculos1.add(Spike(x=1300, y=533, tipo='f'))
 obstaculos1.add(Spike(x=1635, y=667, tipo='b'))
-obstaculos1.add(Spike(x=2000, y=40, tipo='j'))
-obstaculos1.add(Spike(x=2800, y=40, tipo='j'))
-obstaculos1.add(Spike(x=2400, y=600, tipo='k'))
-obstaculos1.add(Spike(x=3200, y=600, tipo='k'))
+obstaculos1.add(Spike(x=2000, y=250, tipo='j'))
+obstaculos1.add(Spike(x=2800, y=250, tipo='j'))
+obstaculos1.add(Spike(x=2400, y=450, tipo='k'))
+obstaculos1.add(Spike(x=3200, y=450, tipo='k'))
 obstaculos1.add(Spike(x=3080, y=0, tipo='e'))
-obstaculos1.add(Spike(x=3600, y=40, tipo='j'))
+obstaculos1.add(Spike(x=3600, y=250, tipo='j'))
 
 # MOEDAS FASE 1 (940, "300") (2100, 60) (3100, 540)
 
@@ -194,35 +196,71 @@ obstaculos1.add(Spike(x=3600, y=40, tipo='j'))
 # Espinhos 
 obstaculos2 = pygame.sprite.Group()
 
-obstaculos2.add(Spike(x=600, y=754, tipo='l'))
+obstaculos2.add(Spike(x=750, y=130, tipo='c'))
+obstaculos2.add(Spike(x=750, y=530, tipo='d'))
+obstaculos2.add(Spike(x=1600, y=450, tipo='l'))
+obstaculos2.add(Spike(x=2000, y=450, tipo='l'))
+obstaculos2.add(Spike(x=2400, y=450, tipo='l'))
+obstaculos2.add(Spike(x=2800, y=450, tipo='l'))
+obstaculos2.add(Spike(x=2000, y=25, tipo='n'))
+obstaculos2.add(Spike(x=1800, y=100, tipo='m'))
+obstaculos2.add(Spike(x=2400, y=25, tipo='n'))
+obstaculos2.add(Spike(x=2200, y=100, tipo='m'))
+obstaculos2.add(Spike(x=2800, y=25, tipo='n'))
+obstaculos2.add(Spike(x=2600, y=100, tipo='m'))
+obstaculos2.add(Spike(x=3000, y=100, tipo='m'))
+obstaculos2.add(Spike(x=3500, y=25, tipo='n'))
+obstaculos2.add(Spike(x=3500, y=225, tipo='n'))
+obstaculos2.add(Spike(x=3500, y=400, tipo='n'))
+obstaculos2.add(Spike(x=3500, y=550, tipo='n'))
+obstaculos2.add(Spike(x=3500, y=700, tipo='n'))
+obstaculos2.add(Spike(x=4200, y=40, tipo='n'))
+obstaculos2.add(Spike(x=4200, y=165, tipo='n'))
+obstaculos2.add(Spike(x=4200, y=290, tipo='n'))
+obstaculos2.add(Spike(x=4200, y=500, tipo='n'))
+obstaculos2.add(Spike(x=4200, y=625, tipo='n'))
 
 
-# obstaculos2.add(Spike(x=600, y=754))
-# obstaculos2.add(Spike(x=632, y=754))
-# obstaculos2.add(Spike(x=664, y=754))
-# obstaculos2.add(Spike(x=820, y=754))
-# obstaculos2.add(Spike(x=852, y=754))
-# obstaculos2.add(Spike(x=1160, y=754))
-# obstaculos2.add(Spike(x=1576, y=754))
-# obstaculos2.add(Spike(x=1673, y=754))
-# obstaculos2.add(Spike(x=2073, y=754))
-# obstaculos2.add(Spike(x=2106, y=754))
-# obstaculos2.add(Spike(x=2139, y=754))
-# obstaculos2.add(Spike(x=2273, y=754))
-# obstaculos2.add(Spike(x=2306, y=754))
-# obstaculos2.add(Spike(x=2339, y=754))
-# obstaculos2.add(Spike(x=2700, y=754))
-# obstaculos2.add(Spike(x=2748, y=754))
-# obstaculos2.add(Spike(x=2796, y=754))
-# obstaculos2.add(Spike(x=2844, y=754))
-# obstaculos2.add(Spike(x=2892, y=754))
-# obstaculos2.add(Spike(x=2943, y=754))
 
 
-# # Fase 3
-# # Espinhos 
-# obstaculos3 = pygame.sprite.Group()
-# obstaculos3.add(Spike(x=1243, y=570))
+
+
+
+# Fase 3
+# Espinhos 
+obstaculos3 = pygame.sprite.Group()
+
+obstaculos3.add(Spike(x=800, y=580, tipo='h'))
+obstaculos3.add(Spike(x=800, y=20, tipo='h'))
+obstaculos3.add(Spike(x=800, y=638, tipo='g'))
+obstaculos3.add(Spike(x=800, y=80, tipo='g'))
+obstaculos3.add(Spike(x=950, y=310, tipo='i'))
+obstaculos3.add(Spike(x=1300, y=160, tipo='i'))
+obstaculos3.add(Spike(x=1300, y=460, tipo='i'))
+# moeda (1455, 180)
+obstaculos3.add(Spike(x=1670, y=150, tipo='i'))
+obstaculos3.add(Spike(x=1750, y=240, tipo='i'))
+obstaculos3.add(Spike(x=1810, y=340, tipo='i'))
+obstaculos3.add(Spike(x=2070, y=150, tipo='i'))
+obstaculos3.add(Spike(x=2070, y=480, tipo='i'))
+#moeda (2270, 500)
+obstaculos3.add(Spike(x=2520, y=200, tipo='i'))
+obstaculos3.add(Spike(x=2520, y=500, tipo='i'))
+# moeda (2670, 220)
+obstaculos3.add(Spike(x=2820, y=150, tipo='i'))
+obstaculos3.add(Spike(x=2820, y=400, tipo='i'))
+obstaculos3.add(Spike(x=2820, y=500, tipo='i'))
+obstaculos3.add(Spike(x=2970, y=250, tipo='i'))
+obstaculos3.add(Spike(x=3320, y=200, tipo='i'))
+obstaculos3.add(Spike(x=3420, y=400, tipo='i'))
+obstaculos3.add(Spike(x=3620, y=300, tipo='i'))
+# moeda ( 3750, 300)
+
+
+
+
+
+
 # obstaculos3.add(Spike(x=1313, y=690))
 # obstaculos3.add(Spike(x=1345, y=690))
 # obstaculos3.add(Spike(x=1439, y=690))
