@@ -44,11 +44,11 @@ class Cubo(pygame.sprite.Sprite):
 
     def update(self):
         if self.subindo :
-            self.pos_y -= 6
+            self.pos_y -= 7
             self.rect.topleft = self.pos_x, self.pos_y
             self.subindo = False
         if self.descendo:
-            self.pos_y += 6
+            self.pos_y += 7
             self.rect.topleft = self.pos_x, self.pos_y
             self.descendo = False
 
@@ -192,8 +192,6 @@ obstaculos1.add(Spike(x=3080, y=0, tipo='e'))
 obstaculos1.add(Spike(x=3600, y=40, tipo='j'))
 
 # MOEDAS FASE 1 (940, "300") (2100, 60) (3100, 540)
-
-
 
 
 
