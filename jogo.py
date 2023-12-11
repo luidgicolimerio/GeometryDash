@@ -2,7 +2,7 @@ import pygame
 import math
 from pygame.locals import *
 from sys import exit
-from cubo import todas_sprites, cubo, obstaculos1, obstaculos2, obstaculos3
+from cubo import todas_sprites, cubo, obstaculos1, obstaculos2, obstaculos3, coins1
 
 
 width = 1200
@@ -18,7 +18,7 @@ def load():
     x = 0
     cl1 = 0
     cl = 0
-    fase = 3
+    fase = 1
     i = 0
     scroll = 0
     play = False
@@ -70,7 +70,6 @@ def start(screen):
 
 def game_over(screen):
     screen.fill((0,0,0))
-    print('PERDEUUUU')
 
 
 def final(screen):
@@ -132,10 +131,11 @@ def update(dt):
         
         
         collision_sprites = check_collision(cubo, obstaculos1)
+        collision_coins = check_collision_coin(cubo, coins1)
         if collision_sprites:
             cubo.colisao()
-            print("Colisão detectada!")
-        
+        if collision_coins:
+            cubo.moeda()
 
 
         tiles = math.ceil(width  / fundo_width) + 1
@@ -148,12 +148,17 @@ def update(dt):
             cl1 = cl1 - (0.15 * dt)
             for espinho in obstaculos1:
                 espinho.update_x()
+            for coin in coins1:
+                coin.update_x()
+ 
 
         #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
         pygame.draw.rect(screen, (70, 70, 70), (0, 730, 5000, 4000))
         pygame.draw.rect(screen, (45, 45, 45), (0, 740, 5000, 4000))
+
+        coins1.draw(screen)
         obstaculos1.draw(screen)
 
         screen.blit(portal1, (4275 + cl1, 150))
@@ -203,9 +208,6 @@ def update(dt):
 
 
     if fase == 3:
-
-        
-
 
         fundo = pygame.image.load('imagens/Frame3.PNG').convert()
         fundo_width = fundo.get_width()
@@ -265,6 +267,9 @@ def update(dt):
 
 def check_collision(player, obstacles):
     collision_sprites = pygame.sprite.spritecollide(player, obstacles, False, pygame.sprite.collide_mask)
+    return collision_sprites
+def check_collision_coin(player, coin):
+    collision_sprites = pygame.sprite.spritecollide(player, coin, True, pygame.sprite.collide_mask)
     return collision_sprites
 
 
