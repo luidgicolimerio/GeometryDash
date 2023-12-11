@@ -10,7 +10,7 @@ height = 900
 
 
 def load():
-    global sys_font, clock, x, cl1, cl, i, scroll, fase, play, quad, font, sair, inicio, p
+    global sys_font, clock, x, cl1, cl, i, scroll, fase, play, quad, font, sair, inicio, p, white, black, border_color, font_color, input_text
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
     font = pygame.font.Font(pygame.font.get_default_font(), 35)
@@ -24,6 +24,20 @@ def load():
     p = 0
     play = False
     sair = True
+
+
+    # Campo de Entrada de Texto
+    # Cores
+    white = (255, 255, 255)
+    black = (0, 0, 0)
+    border_color = (50, 50, 50)
+    font_color = (10, 10, 10)
+
+    # Fonte e texto
+    font = pygame.font.Font(None, 36)
+    input_text = ''
+
+
 
 
 
@@ -48,7 +62,7 @@ def draw_screen(screen):
 
 
 def start(screen):
-    global cl1, cl, fundo, tri, ret, quad, inicio
+    global cl1, cl, fundo, tri, ret, quad, inicio, white, black, border_color, font_color, input_text, color, color_active, color_inactive, text_area, active
     screen.blit(inicio, (0, 0))
 
     fonte = pygame.font.Font(pygame.font.get_default_font(), 50)
@@ -69,6 +83,20 @@ def start(screen):
 
     t = font.render("leave", True, (0,0,0))
     screen.blit(t, (495,705))
+
+    # Desenha a área do texto
+    text_area = pygame.Rect(50, 50, 300, 40)  # Área do texto
+    color_active = pygame.Color('lightskyblue3')
+    color_inactive = pygame.Color('dodgerblue2')
+    color = color_inactive
+    active = False
+    width = max(300, font.size(input_text)[0] + 10)
+    text_area.w = width
+    pygame.draw.rect(screen, black, text_area, border_radius=5)  # Borda arredondada
+    pygame.draw.rect(screen, color, (text_area.x + 2, text_area.y + 2, text_area.w - 4, text_area.h - 4),
+                     border_radius=4)  # Área do texto
+    text_surface = font.render(input_text, True, font_color)
+    screen.blit(text_surface, (text_area.x + 5, text_area.y + 5))
 
 
 
@@ -137,7 +165,6 @@ def final(screen):
 
 def update(dt):
     global px, cl1, clock, cl, scroll, fase, tiles, i, fade, fade_img, fade_alpha, perdeu
-
 
     # MUDANÇA DE FASE
     while i <= 2:
@@ -342,7 +369,7 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
 
 
 def main_loop(screen):  
-    global clock, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1
+    global clock, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text
     running = True
 
     
@@ -360,15 +387,30 @@ def main_loop(screen):
                 break
             
             elif e.type == pygame.MOUSEBUTTONDOWN: #detecta o inicio do clique do mouse
+                if text_area.collidepoint(e.pos):
+                    active = not active
+                else:
+                    active = False
+                color = color_active if active else color_inactive
                 mouse_buttons = pygame.mouse.get_pressed()
                 px_mouse, py_mouse = pygame.mouse.get_pos()
                 mouse_click_down(px_mouse, py_mouse, mouse_buttons)
+            elif e.type == pygame.KEYDOWN:
+                if active:
+                    if e.key == pygame.K_RETURN:
+                        print("Texto digitado:", input_text)  # Aqui você pode usar o texto digitado
+                        input_text = ''
+                    elif e.key == pygame.K_BACKSPACE:
+                        input_text = input_text[:-1]
+                    else:
+                        input_text += e.unicodeS
             elif e.type == pygame.MOUSEBUTTONUP: #detecta o fim do clique do mouse
                 mouse_buttons = pygame.mouse.get_pressed()
                 px_mouse, py_mouse = pygame.mouse.get_pos()
                 mouse_click_up(px_mouse, py_mouse, mouse_buttons)
 
-            
+
+
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
