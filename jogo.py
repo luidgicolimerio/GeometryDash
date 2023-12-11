@@ -10,7 +10,7 @@ height = 900
 
 
 def load():
-    global sys_font, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
+    global sys_font, color_active, color, active, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
 
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
@@ -44,6 +44,15 @@ def load():
     # Fonte e texto
     font = pygame.font.Font(None, 36)
     input_text = ''
+
+    text_area = pygame.Rect(50, 50, 300, 40)  # Área do texto
+    tamanho = max(300, font.size(input_text)[0] + 10)
+    text_area.w = tamanho
+    color_active = pygame.Color('lightskyblue3')
+    color_inactive = pygame.Color('dodgerblue2')
+    color = color_inactive
+    active = False
+
 
 
 
@@ -93,13 +102,8 @@ def start(screen):
     screen.blit(t, (495,705))
 
     # Desenha a área do texto
-    text_area = pygame.Rect(50, 50, 300, 40)  # Área do texto
-    color_active = pygame.Color('lightskyblue3')
-    color_inactive = pygame.Color('dodgerblue2')
-    color = color_inactive
-    active = False
-    width = max(300, font.size(input_text)[0] + 10)
-    text_area.w = width
+
+
     pygame.draw.rect(screen, black, text_area, border_radius=5)  # Borda arredondada
     pygame.draw.rect(screen, color, (text_area.x + 2, text_area.y + 2, text_area.w - 4, text_area.h - 4),
                      border_radius=4)  # Área do texto
@@ -360,7 +364,7 @@ def mouse_click_up(px_mouse, py_mouse, mouse_buttons):
 def keyboard_keyup(keys):
     pass
 def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
-    global play, sair, voltar, cl1
+    global play, sair, voltar, cl1, active
     if mouse_buttons[0]: # left
         if check_click(432.8, 470, 334.4, 110, px_mouse, py_mouse):
             play = True
@@ -378,6 +382,11 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             cl1 = 0
             cubo.perdeu = False
 
+        if check_click(50, 50, 300, 40, px_mouse, py_mouse):
+            active = True
+            print(active)
+        else:
+            active = False
 
     elif mouse_buttons[2]: # right
         if check_click(432.8, 470, 334.4, 110, px_mouse, py_mouse):
@@ -395,6 +404,8 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             voltar = True
             cl1 = 0
             cubo.perdeu = False
+
+
 
 
 
@@ -426,14 +437,14 @@ def main_loop(screen):
                 px_mouse, py_mouse = pygame.mouse.get_pos()
                 mouse_click_down(px_mouse, py_mouse, mouse_buttons)
             elif e.type == pygame.KEYDOWN:
-                if active:
+                if active == True:
                     if e.key == pygame.K_RETURN:
                         print("Texto digitado:", input_text)  # Aqui você pode usar o texto digitado
                         input_text = ''
                     elif e.key == pygame.K_BACKSPACE:
                         input_text = input_text[:-1]
                     else:
-                        input_text += e.unicodeS
+                        input_text += e.unicode
             elif e.type == pygame.MOUSEBUTTONUP: #detecta o fim do clique do mouse
                 mouse_buttons = pygame.mouse.get_pressed()
                 px_mouse, py_mouse = pygame.mouse.get_pos()
@@ -485,9 +496,9 @@ def main_loop(screen):
 
 
 
-        fade_alpha -= 5
-        fade_img.set_alpha(fade_alpha)
-        screen.blit(fade_img, fade)
+        # fade_alpha -= 5
+        # fade_img.set_alpha(fade_alpha)
+        # screen.blit(fade_img, fade)
 
         # Pygame atualiza o seu estado
         pygame.display.update()
