@@ -10,7 +10,7 @@ height = 900
 
 
 def load():
-    global sys_font, clock, x, cl1, cl, i, scroll, fase, play, quad, font, sair, inicio
+    global sys_font, clock,perdeu, x, cl1, cl, i, scroll, fase, play, quad, font, sair, inicio, p
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
     font = pygame.font.Font(pygame.font.get_default_font(), 35)
@@ -18,15 +18,18 @@ def load():
     x = 0
     cl1 = 0
     cl = 0
-    fase = 3
+    fase = 1
     i = 0
     scroll = 0
+    p = 0
     play = False
     sair = True
+    perdeu = False
+
 
     quad = pygame.image.load('Sprites/Morte/alien.png')
     quad = pygame.transform.scale(quad, (quad.get_width()* 3, quad.get_height() * 3))
-    inicio = pygame.image.load('imagens/inicio.PNG')
+    inicio = pygame.image.load('imagens/TelaInicial.PNG')
 
 
 def draw_screen(screen):
@@ -38,39 +41,64 @@ def draw_screen(screen):
     #screen.blit(fundo, (0,0))
 
 
+
+
+
+
+
+
 def start(screen):
     global cl1, cl, fundo, tri, ret, quad, inicio
     screen.blit(inicio, (0, 0))
 
-    screen.blit(quad, (144, 200))
-    screen.blit(quad, (912, 200))
+    fonte = pygame.font.Font(pygame.font.get_default_font(), 50)
+    t = fonte.render("%i" %(fase), True, (219, 225, 0))
+    screen.blit(t, (290,495))
 
-    t = sys_font.render("Geometry Dash", True, (255,255,255))
-    screen.blit(t, (300,80))
-
-    pygame.draw.rect(screen, (100, 100, 100), (412.8, 250, 374.4, 150))
-    t = font.render("Está na Fase: %i" %(fase), True, (0,0,0))
-    screen.blit(t, (470,305))
-
-    pygame.draw.rect(screen, (100, 100, 100), (412.8, 450, 374.4, 150))
-    pygame.draw.rect(screen, (170, 170, 170), (432.8, 470, 334.4, 110))
 
     if cl1 >= 0:
-        t = font.render("Começar o jogo", True, (0,0,0))
+        t = font.render("Começar", True, (219, 225, 0))
     else:
-        t = font.render("Retornar ao jogo", True, (0,0,0))
+        t = font.render("Retornar", True, (219, 225, 0))
     
-    screen.blit(t, (465,505))
+    screen.blit(t, (525,615))
 
 
     pygame.draw.rect(screen, (100, 100, 100), (412.8, 650, 374.4, 150))
     pygame.draw.rect(screen, (170, 170, 170), (432.8, 670, 334.4, 110))
-    t = font.render("sair do jogo", True, (0,0,0))
+
+    t = font.render("leave", True, (0,0,0))
     screen.blit(t, (495,705))
 
+
+
+
+
+
+
+
+
 def game_over(screen):
+    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p
     screen.fill((0,0,0))
-    print('PERDEUUUU')
+    while p < 1:
+        fade_img = pygame.Surface((1200,900)).convert_alpha()
+        fade = fade_img.get_rect()
+        fade_img.fill('white')
+        fade_alpha = 255
+        p = 1
+    if p == 1:
+        fade_alpha -= 1
+        fade_img.set_alpha(fade_alpha)
+        screen.blit(fade_img, fade)
+        if fade_alpha == 0:
+            p = 2
+    #if p == 2:
+
+
+
+
+
 
 
 def final(screen):
@@ -108,12 +136,12 @@ def final(screen):
         screen.blit(t, (950,810))
 
 def update(dt):
-    global px, cl1, clock, cl, scroll, fase, tiles, i, fade, fade_img, fade_alpha
+    global px, cl1, clock, cl, scroll, fase, tiles, i, fade, fade_img, fade_alpha, perdeu
 
 
     # MUDANÇA DE FASE
     while i <= 2:
-        if cl1 <= -4130 and fase < 3:
+        if cl1 <= -4230 and fase < 3:
             fase += 1
             cl1 = 0
         i += 1
@@ -135,6 +163,7 @@ def update(dt):
         if collision_sprites:
             cubo.colisao()
             print("Colisão detectada!")
+            perdeu = True
         
 
 
@@ -156,7 +185,7 @@ def update(dt):
         pygame.draw.rect(screen, (45, 45, 45), (0, 740, 5000, 4000))
         obstaculos1.draw(screen)
 
-        screen.blit(portal1, (4275 + cl1, 150))
+        screen.blit(portal1, (4375 + cl1, 150))
         
 
     if fase == 2:
@@ -174,6 +203,7 @@ def update(dt):
         if collision_sprites:
             cubo.colisao()
             print("Colisão detectada!")
+            perdeu = True
         
 
 
@@ -199,7 +229,7 @@ def update(dt):
 
         obstaculos2.draw(screen)
 
-        screen.blit(portal1, (4275 + cl1, 150))
+        screen.blit(portal1, (4375 + cl1, 150))
 
 
     if fase == 3:
@@ -221,6 +251,7 @@ def update(dt):
         if collision_sprites:
             cubo.colisao()
             print("Colisão detectada!")
+            perdeu = True
         
 
 
@@ -244,7 +275,7 @@ def update(dt):
 
         obstaculos3.draw(screen)
 
-        screen.blit(portal1, (4275 + cl1, 150))
+        screen.blit(portal1, (4375 + cl1, 150))
 
 
     pygame.draw.rect(screen, (105, 105, 105), (1120, 20, 60, 60))
@@ -255,13 +286,15 @@ def update(dt):
 
     todas_sprites.draw(screen)
     if fase == 1:
-        screen.blit(portal2, (4495 + cl1, 150))
+        screen.blit(portal2, (4615 + cl1, 150))
     if fase == 2:
-        screen.blit(portal2, (4495 + cl1, 150))
+        screen.blit(portal2, (4615 + cl1, 150))
     if fase == 3:
-        screen.blit(portal2, (4495 + cl1, 150))
+        screen.blit(portal2, (4615 + cl1, 150))
     todas_sprites.update()
     pygame.display.flip()
+
+
 
 def check_collision(player, obstacles):
     collision_sprites = pygame.sprite.spritecollide(player, obstacles, False, pygame.sprite.collide_mask)
@@ -305,7 +338,7 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
 
 
 def main_loop(screen):  
-    global clock, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade
+    global clock, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1
     running = True
 
     
@@ -340,36 +373,39 @@ def main_loop(screen):
             cubo.desce()
 
 
-        collision_sprites = check_collision(cubo, obstaculos1)
-        if collision_sprites:
-            cubo.colisao()
 
-            print("Colisão detectada!")
-        
-        
 
         # Define FPS máximo
         clock.tick(60)
         # Calcula tempo transcorrido desde a última atualização 
         dt = clock.get_time()
 
-        if cubo.perdeu:
+
+        if cubo.perdeu == False:
+            if fase == 3 and cl1 <= -4230:
+                sair = True
+                play = True
+                final(screen)
+
+            else:
+                if play == False:
+                    start(screen)
+                if play == True:
+                    update(dt)
+        else:
+            cubo.pos_y -= 0
+            cl1 = 0
+            scroll = 0
+            for espinho in obstaculos2:
+                espinho.movement = 0
             game_over(screen)
 
-        if fase == 3 and cl1 <= -4130:
-            sair = True
-            play = True
-            final(screen)
 
-        else:
-            if play == False:
-                start(screen)
-            if play == True:
-                update(dt)
 
-        # fade_alpha -= 1
-        # fade_img.set_alpha(fade_alpha)
-        # screen.blit(fade_img, fade)
+
+        fade_alpha -= 5
+        fade_img.set_alpha(fade_alpha)
+        screen.blit(fade_img, fade)
 
         # Pygame atualiza o seu estado
         pygame.display.update()

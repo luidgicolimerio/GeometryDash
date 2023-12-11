@@ -200,7 +200,6 @@ obstaculos1.add(Spike(x=3600, y=250, tipo='j'))
 # Espinhos 
 obstaculos2 = pygame.sprite.Group()
 
-obstaculos2.add(Spike(x=600, y=754, tipo='l'))
 
 obstaculos2.add(Spike(x=750, y=130, tipo='c'))
 obstaculos2.add(Spike(x=750, y=530, tipo='d'))
