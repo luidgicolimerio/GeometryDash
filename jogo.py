@@ -79,14 +79,16 @@ def rank(screen):
     
     if py == 0:
         screen.blit(tela, (0,0))
-        ranking_list = ranking.abre()
-        for (i, el) in enumerate(ranking_list):
-            t = text.render('%i: - %s %s tentativas %s/10' %(i + 1, el[0], el[2], el[1]), False, (219,225,0))
-            screen.blit(t,(395,400 + py))
-            py = py + 50
-            print(py)
-            if i >= 9:
-                break
+        try:
+            ranking_list = ranking.abre()
+            for (i, el) in enumerate(ranking_list):
+                t = text.render('%i: - %s %s tentativas %s/10' %(i + 1, el[0], el[2], el[1]), False, (219,225,0))
+                screen.blit(t,(395,400 + py))
+                py = py + 50
+                if i >= 9:
+                    break
+        except:
+            print('Ainda não existe rank')
 
     fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
     t = fonte.render("Retornar", True, (219, 225, 0))
@@ -221,9 +223,6 @@ def update(dt):
         collision_coins = check_collision_coin(cubo, coins1)
         if collision_sprites:
             cubo.colisao()
-
-        if collision_coins:
-            cubo.moeda()
 
 
         tiles = math.ceil(width  / fundo_width) + 1

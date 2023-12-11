@@ -28,8 +28,9 @@ def escrve():
         for tentativa in range(tentativas):
             moedas = jogador[2][0]
             level = jogador[2][1]
-            arqS.write(f'{moedas},{tentativas}\n' )
+            arqS.write(f'{moedas},{level}\n' )
     arqS.close()
+
 def abre():
     arqE = open('ranking.txt', 'r')
     ranking = []
@@ -69,6 +70,7 @@ for i, linha in enumerate(arqE):
 
 arqE.close()
 
+abre()
 
 
 
