@@ -10,28 +10,35 @@ height = 900
 
 
 def load():
-    global sys_font, color_active, color, active, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
+    global sys_font, rankk, ranking, Tfinal, py, color_active, color_inactive, color, active, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
 
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
     font = pygame.font.Font(pygame.font.get_default_font(), 35)
     clock = pygame.time.Clock()
+    py = 0
     x = 0
     cl1 = 0
     cl = 0
-    fase = 1
+    fase = 3
     i = 0
     scroll = 0
     p = 0
     play = False
     sair = True
     voltar = False
+    rankk = False
     l1 = fase1()
     obstaculos1, coins1 = l1
     l2 = fase2()
     obstaculos2 = l2
     l3 =fase3()
     obstaculos3 = l3
+
+    ranking = [['josé', 25, 10], ['luidgi', 24, 10], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
+               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
+               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
+               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]]
 
 
     # Campo de Entrada de Texto
@@ -42,11 +49,11 @@ def load():
     font_color = (10, 10, 10)
 
     # Fonte e texto
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, 60)
     input_text = ''
 
-    text_area = pygame.Rect(50, 50, 300, 40)  # Área do texto
-    tamanho = max(300, font.size(input_text)[0] + 10)
+    text_area = pygame.Rect(395, 670, 400, 70)  # Área do texto
+    tamanho = max(400, font.size(input_text)[0] + 10)
     text_area.w = tamanho
     color_active = pygame.Color('lightskyblue3')
     color_inactive = pygame.Color('dodgerblue2')
@@ -60,20 +67,34 @@ def load():
 
     quad = pygame.image.load('Sprites/Morte/alien.png')
     quad = pygame.transform.scale(quad, (quad.get_width()* 3, quad.get_height() * 3))
-    inicio = pygame.image.load('imagens/TelaInicial.PNG')
+    inicio = pygame.image.load('imagens/Inicial.PNG')
+    Tfinal = pygame.image.load('imagens/Final.PNG')
     over = pygame.image.load('imagens/GameOver.PNG')
 
-def draw_screen(screen):
-    global cl1, cl2, cl3, cl, fundo, tri, ret
-    screen.fill((100,160,255))
+def rank(screen):
+    global cl1, cl, tela, py
+ 
     
-    t = sys_font.render(' ', False, (0,0,0))
-    screen.blit(t, t.get_rect(top = 290, left = px))
-    #screen.blit(fundo, (0,0))
+    tela = pygame.image.load('imagens/rank.PNG')
+    text = pygame.font.Font(pygame.font.get_default_font(), 28)
+
+    
+    
+    if py == 0:
+        screen.blit(tela, (0,0))
+        for (i, el) in enumerate(ranking):
+            t = text.render('%i: - %s %s tentativas %s/10' %(i + 1, el[0], el[1], el[2]), False, (219,225,0))
+            screen.blit(t,(395,400 + py))
+            py = py + 50
+            print(py)
+            if i >= 9:
+                break
 
 
 
-
+    fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
+    t = fonte.render("Retornar", True, (219, 225, 0))
+    screen.blit(t, (45,205))
 
 
 
@@ -82,33 +103,32 @@ def start(screen):
     global cl1, cl, fundo, tri, ret, quad, inicio, white, black, border_color, font_color, input_text, color, color_active, color_inactive, text_area, active
     screen.blit(inicio, (0, 0))
 
-    fonte = pygame.font.Font(pygame.font.get_default_font(), 50)
+    fonte = pygame.font.Font(pygame.font.get_default_font(), 65)
     t = fonte.render("%i" %(fase), True, (219, 225, 0))
-    screen.blit(t, (290,495))
+    screen.blit(t, (225,478))
 
-
+    fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
     if cl1 >= 0:
-        t = font.render("Começar", True, (219, 225, 0))
+        t = fonte.render("Começar", True, (219, 225, 0))
     else:
-        t = font.render("Retornar", True, (219, 225, 0))
+        t = fonte.render("Retornar", True, (219, 225, 0))
     
-    screen.blit(t, (525,615))
+    screen.blit(t, (515,595))
 
 
-    pygame.draw.rect(screen, (100, 100, 100), (412.8, 650, 374.4, 150))
-    pygame.draw.rect(screen, (170, 170, 170), (432.8, 670, 334.4, 110))
-
-    t = font.render("leave", True, (0,0,0))
-    screen.blit(t, (495,705))
+    t = fonte.render("Sair", True, (219, 225, 0))
+    screen.blit(t, (1065,795))
 
     # Desenha a área do texto
-
-
     pygame.draw.rect(screen, black, text_area, border_radius=5)  # Borda arredondada
     pygame.draw.rect(screen, color, (text_area.x + 2, text_area.y + 2, text_area.w - 4, text_area.h - 4),
                      border_radius=4)  # Área do texto
     text_surface = font.render(input_text, True, font_color)
     screen.blit(text_surface, (text_area.x + 5, text_area.y + 5))
+
+
+    #pygame.draw.rect(screen, (0,0,0), (884, 425, 150, 150))
+    
 
 
 
@@ -129,7 +149,7 @@ def game_over(screen):
         fade_alpha = 255
         p = 1
     if p == 1:
-        fade_alpha -= 1
+        fade_alpha -= 5
         fade_img.set_alpha(fade_alpha)
         screen.blit(fade_img, fade)
         if fade_alpha <= 0: 
@@ -170,23 +190,8 @@ def final(screen):
         if fade_alpha <= 0:
             x = 2
     if x == 2:
-        screen.blit(inicio, (0,0))
-        t = sys_font.render("Creditos", True, (255,255,255))
-        screen.blit(t, (430,80))
-        t = sys_font.render("Trabalho de INF1034", True, (255,255,255))
-        screen.blit(t, (200,200))
-        t = font.render("Turma: 3WA", True, (255,255,255))
-        screen.blit(t, (500,350))  
-        t = font.render("Nome: José Carlos - Matrícula: 2320465", True, (255,255,255))
-        screen.blit(t, (250,400))
-        t = font.render("Nome: Luidgi Colimerio - Matrícula: 2320594", True, (255,255,255))
-        screen.blit(t, (250,450))
+        screen.blit(Tfinal, (0,0))
 
-
-        pygame.draw.rect(screen, (100, 100, 100), (900, 750, 300, 150))
-        pygame.draw.rect(screen, (170, 170, 170), (920, 770, 260, 110))
-        t = font.render("sair do jogo", True, (0,0,0))
-        screen.blit(t, (950,810))
 
 def update(dt):
     global px, cl1, clock, cl, scroll, fase, tiles, i, fade, fade_img, fade_alpha, perdeu
@@ -363,15 +368,16 @@ def mouse_click_up(px_mouse, py_mouse, mouse_buttons):
     pass    
 def keyboard_keyup(keys):
     pass
+
 def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
-    global play, sair, voltar, cl1, active
+    global play, sair, voltar, cl1, active, rankk, py
     if mouse_buttons[0]: # left
-        if check_click(432.8, 470, 334.4, 110, px_mouse, py_mouse):
+        if check_click(525, 425, 150, 150, px_mouse, py_mouse):
             play = True
         if check_click(1120, 20, 60, 60, px_mouse, py_mouse):
             sair = True
             play = False
-        if check_click(432.8, 670, 334.4, 110, px_mouse, py_mouse):
+        if check_click(1028, 740, 150, 150, px_mouse, py_mouse):
             sair = False
         if check_click(900, 750, 300, 150, px_mouse, py_mouse):
             if x == 2:
@@ -382,35 +388,23 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             cl1 = 0
             cubo.perdeu = False
 
-        if check_click(50, 50, 300, 40, px_mouse, py_mouse):
+        if check_click(395, 670, 400, 70, px_mouse, py_mouse):
             active = True
             print(active)
         else:
             active = False
-
-    elif mouse_buttons[2]: # right
-        if check_click(432.8, 470, 334.4, 110, px_mouse, py_mouse):
-            play = True
-        if check_click(1120, 20, 60, 60, px_mouse, py_mouse):
-            sair = True
-            play = False
-        if check_click(432.8, 670, 334.4, 110, px_mouse, py_mouse):
-            sair = False
-        if check_click(900, 750, 300, 150, px_mouse, py_mouse):
-            if x == 2:
-                play = False
-                sair = False
-        if check_click(518, 603, 150, 150, px_mouse, py_mouse):
-            voltar = True
-            cl1 = 0
-            cubo.perdeu = False
-
-
-
+        if check_click(50, 33, 150, 150, px_mouse, py_mouse):
+                rankk = False
+                print('a')
+        if check_click(884, 425, 150, 150, px_mouse, py_mouse):
+            if play == False or (play == True and sair == True):
+                rankk = True
+                py = 0
+            
 
 
 def main_loop(screen):  
-    global clock, voltar, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text
+    global clock, voltar,rankk, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text
     running = True
 
     
@@ -470,11 +464,15 @@ def main_loop(screen):
 
         if cubo.perdeu == False:
             voltar = False
+            if rankk == True:
+                rank(screen)
 
-            if fase == 3 and cl1 <= -4230:
+            elif fase == 3 and cl1 <= -4230:
                 sair = True
                 play = True
                 final(screen)
+
+
 
             else:
                 if play == False:
