@@ -10,7 +10,7 @@ height = 900
 
 
 def load():
-    global sys_font, rankk, k, ranking, Tfinal, py, color_active, color_inactive, color, active, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
+    global sys_font, rankk, k, Tfinal, py, color_active, color_inactive, color, active, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
 
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
@@ -20,7 +20,7 @@ def load():
     x = 0
     cl1 = 0
     cl = 0
-    fase = 3
+    fase = 1
     i = 0
     scroll = 0
     p = 0
@@ -35,11 +35,6 @@ def load():
     obstaculos2 = l2
     l3 =fase3()
     obstaculos3 = l3
-
-    ranking = [['josé', 25, 10], ['luidgi', 24, 10], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
-               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
-               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]
-               , ['pedro', 23, 9], ['pedro', 23, 9], ['pedro', 23, 9]]
 
 
     # Campo de Entrada de Texto
@@ -57,7 +52,7 @@ def load():
     tamanho = max(400, font.size(input_text)[0] + 10)
     text_area.w = tamanho
     color_active = pygame.Color('lightskyblue3')
-    color_inactive = pygame.Color('dodgerblue2')
+    color_inactive = white
     color = color_inactive
     active = False
 
@@ -83,8 +78,9 @@ def rank(screen):
     
     if py == 0:
         screen.blit(tela, (0,0))
-        for (i, el) in enumerate(ranking):
-            t = text.render('%i: - %s %s tentativas %s/10' %(i + 1, el[0], el[1], el[2]), False, (219,225,0))
+        ranking_list = ranking.abre()
+        for (i, el) in enumerate(ranking_list):
+            t = text.render('%i: - %s %s tentativas %s/10' %(i + 1, el[0], el[2], el[1]), False, (219,225,0))
             screen.blit(t,(395,400 + py))
             py = py + 50
             print(py)
@@ -138,9 +134,13 @@ def game_over(screen):
     global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p, obstaculos1, obstaculos2, obstaculos3, coins1, nome_jogador, fase, k
     screen.fill((0,0,0))
     if k:
-        ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
-        ranking.escrve()
-        k = False
+        try:
+            ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
+            ranking.escrve()
+            k = False
+        except:
+            print('Não cadastrou nome!')
+            k = False
     
     while p < 1:
         fade_img = pygame.Surface((1200,900)).convert_alpha()
@@ -181,9 +181,13 @@ def final(screen):
     screen.fill((0,0,0))
 
     if k:
-        ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
-        ranking.escrve()
-        k = False
+        try:
+            ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
+            ranking.escrve()
+            k = False
+        except:
+            print('Não cadastrou nome!')
+            k = False
 
     while x < 1:
         fade_img = pygame.Surface((1200,900)).convert_alpha()
