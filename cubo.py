@@ -69,21 +69,6 @@ class Cubo(pygame.sprite.Sprite):
                 self.morre = False
                 self.image = self.personagem
 
-    
-        # if self.pulando:
-        #     self.gravity = 0.5
-        #     self.pos_y -= self.velocity
-        #     self.velocity -= self.gravity
-        #     self.rect.topleft = self.pos_x, self.pos_y
-        #     if self.velocity < -self.heigth:
-        #         self.pulando = False
-        #         self.gravity = 0.5
-        #         self.heigth = 8
-        #         self.velocity = self.heigth
-        #         self.rect.topleft = self.pos_x, self.pos_y
-        # if self.on_plataforma == False:
-        #     self.pos_y = 742
-
 class Brilho(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -248,7 +233,7 @@ def fase2():
     obstaculos2.add(Spike(x=3000, y=100, tipo='m'))
     obstaculos2.add(Spike(x=3500, y=25, tipo='n'))
     obstaculos2.add(Spike(x=3500, y=225, tipo='n'))
-    obstaculos2.add(Spike(x=3500, y=400, tipo='n'))
+    obstaculos2.add(Spike(x=3500, y=415, tipo='n'))
     obstaculos2.add(Spike(x=3500, y=550, tipo='n'))
     obstaculos2.add(Spike(x=3500, y=700, tipo='n'))
     obstaculos2.add(Spike(x=4200, y=40, tipo='n'))

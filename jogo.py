@@ -1,3 +1,11 @@
+# Nome: José Carlos - Matrícula: 2320465
+# Nome: Luidgi Colimerio - Matrícula: 2320594
+# Turma: 3WA
+# Fizemos o nosso jogo "Gemeth Dash" baseado em um famoso jogo da RobTop chamado "Geometry Dash". O objetivo do nosso jogo é coletar as moedas 
+# enquando você voa com a nave e chegar no final. Ao todo você deverá coletar 10 moedas que são distribuidas pelos 3 níveis, a cada nível que 
+# você passa, a dificuldade aumenta.
+# Boa sorte!
+
 import pygame
 import math
 from pygame.locals import *
@@ -10,7 +18,7 @@ height = 900
 
 
 def load():
-    global sys_font, rankk, k, Tfinal, py, color_active, color_inactive, color, active, text_area, obstaculos1, coins1, coins2, coins3, obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
+    global sys_font, rankk, pausa, pausar, k, Tfinal, py, color_active, color_inactive, color, active, text_area, obstaculos1, coins1, coins2, coins3, obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
 
 
     
@@ -26,10 +34,12 @@ def load():
     scroll = 0
     p = 0
     play = False
+    pausar = False
     sair = True
     voltar = False
     rankk = False
     k = True
+    
     l1 = fase1()
     obstaculos1, coins1 = l1
     l2 = fase2()
@@ -38,18 +48,15 @@ def load():
     obstaculos3, coins3 = l3
 
 
-    # Campo de Entrada de Texto
-    # Cores
     white = (255, 255, 255)
     black = (0, 0, 0)
     border_color = (50, 50, 50)
     font_color = (10, 10, 10)
 
-    # Fonte e texto
     font = pygame.font.Font(None, 60)
     input_text = ''
 
-    text_area = pygame.Rect(395, 670, 400, 70)  # Área do texto
+    text_area = pygame.Rect(395, 670, 400, 70)
     tamanho = max(400, font.size(input_text)[0] + 10)
     text_area.w = tamanho
     color_active = pygame.Color('lightskyblue3')
@@ -57,16 +64,12 @@ def load():
     color = color_inactive
     active = False
 
-
-
-
-
-
     quad = pygame.image.load('Sprites/Morte/alien.png')
     quad = pygame.transform.scale(quad, (quad.get_width()* 3, quad.get_height() * 3))
     inicio = pygame.image.load('imagens/Inicial.PNG')
     Tfinal = pygame.image.load('imagens/Final.PNG')
     over = pygame.image.load('imagens/GameOver.PNG')
+    pausa = pygame.image.load('imagens/pause.PNG')
 
 def rank(screen):
     global cl1, cl, tela, py
@@ -104,10 +107,9 @@ def start(screen):
     screen.blit(t, (225,478))
 
     fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
-    if cl1 >= 0:
-        t = fonte.render("Começar", True, (219, 225, 0))
-    else:
-        t = fonte.render("Retornar", True, (219, 225, 0))
+
+    t = fonte.render("Começar", True, (219, 225, 0))
+
     
     screen.blit(t, (515,595))
 
@@ -123,7 +125,20 @@ def start(screen):
     screen.blit(text_surface, (text_area.x + 5, text_area.y + 5))
 
 
+def pause(screen):
+    global cl1, cl, fundo, tri, ret, quad, inicio, white, black, border_color, font_color, input_text, color, color_active, color_inactive, text_area, active
+    screen.blit(pausa, (0, 0))
 
+    fonte = pygame.font.Font(pygame.font.get_default_font(), 65)
+    t = fonte.render("%i" %(fase), True, (219, 225, 0))
+    screen.blit(t, (225,478))  
+
+    fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
+    t = fonte.render("Retornar", True, (219, 225, 0))
+    screen.blit(t, (515,595))        
+
+    t = fonte.render("Sair", True, (219, 225, 0))
+    screen.blit(t, (1065,795))
 
 
 def game_over(screen):
@@ -133,6 +148,8 @@ def game_over(screen):
         try:
             ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
             ranking.escrve()
+            cubo.pontos = 0
+            fase = 1
             k = False
         except:
             print('Não cadastrou nome!')
@@ -170,6 +187,7 @@ def final(screen):
         try:
             ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
             ranking.escrve()
+            cubo.pontos = 0
             k = False
         except:
             print('Não cadastrou nome!')
@@ -193,8 +211,6 @@ def final(screen):
         fonte = pygame.font.Font(pygame.font.get_default_font(), 40)
         t = fonte.render("Sair", True, (219, 225, 0))
         screen.blit(t, (1065,795))
-
-
 
 def update(dt):
     global px, cl1, clock, cl, scroll, fase, tiles, i, fade, fade_img, fade_alpha, perdeu, nome_jogador
@@ -231,7 +247,7 @@ def update(dt):
         for i in range(0, tiles):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
-        #scroll background
+
             scroll = scroll - (0.15 * dt)
             cl1 = cl1 - (0.15 * dt)
             for espinho in obstaculos1:
@@ -239,8 +255,6 @@ def update(dt):
             for coin in coins1:
                 coin.update_x()
  
-
-        #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
         pygame.draw.rect(screen, (70, 70, 70), (0, 730, 5000, 4000))
@@ -270,8 +284,6 @@ def update(dt):
 
         if collision_coins:
             cubo.moeda()
-        
-
 
 
         tiles = math.ceil(width  / fundo_width) + 1
@@ -279,8 +291,6 @@ def update(dt):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
             fundo_rect.x = i * fundo_width + scroll
 
-
-        #scroll background
             scroll = scroll - (0.15 * dt)
             cl1 = cl1 - (0.15 * dt)
             for espinho in obstaculos2:
@@ -288,7 +298,6 @@ def update(dt):
             for coin in coins2:
                 coin.update_x()
 
-        #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
         pygame.draw.rect(screen, (70, 70, 70), (0, 730, 4000, 4000))
@@ -296,7 +305,6 @@ def update(dt):
 
         coins2.draw(screen)
         obstaculos2.draw(screen)
-
         screen.blit(portal1, (4375 + cl1, 150))
 
 
@@ -320,8 +328,6 @@ def update(dt):
             cubo.moeda()
 
 
-
-
         tiles = math.ceil(width  / fundo_width) + 1
         for i in range(0, tiles):
             screen.blit(fundo, (i * fundo_width + scroll, 0))
@@ -331,11 +337,9 @@ def update(dt):
             for coin in coins3:
                 coin.update_x()
 
-        #scroll background
             scroll = scroll - (0.15 * dt)
             cl1 = cl1 - (0.15 * dt)
 
-        #reset scroll
         if abs(scroll) > fundo_width:
             scroll = 0
         pygame.draw.rect(screen, (70, 70, 70), (0, 730, 5000, 4000))
@@ -343,15 +347,14 @@ def update(dt):
 
         coins3.draw(screen)
         obstaculos3.draw(screen)
-
         screen.blit(portal1, (4375 + cl1, 150))
+
 
 
     pygame.draw.rect(screen, (105, 105, 105), (1120, 20, 60, 60))
     pygame.draw.rect(screen, (195, 195, 195), (1125, 25, 50, 50))
     pygame.draw.rect(screen, (0, 0, 0), (1137, 30, 10, 40))
     pygame.draw.rect(screen, (0, 0, 0), (1152, 30, 10, 40))
-
 
     todas_sprites.draw(screen)
     if fase == 1:
@@ -380,14 +383,16 @@ def mouse_click_up(px_mouse, py_mouse, mouse_buttons):
 def keyboard_keyup(keys):
     pass
 
+
 def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
-    global play, sair, voltar, cl1, active, rankk, py, k
+    global play, sair, voltar, cl1, active, rankk, py, k, pausar
     if mouse_buttons[0]: # left
         if check_click(525, 425, 150, 150, px_mouse, py_mouse):
             play = True
+            pausar = False
         if check_click(1120, 20, 60, 60, px_mouse, py_mouse):
-            sair = True
             play = False
+            pausar = True
         if check_click(1028, 740, 150, 150, px_mouse, py_mouse):
             sair = False
         if check_click(900, 750, 300, 150, px_mouse, py_mouse):
@@ -399,11 +404,8 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             cl1 = 0
             cubo.perdeu = False
             k = True
-
-
         if check_click(395, 670, 400, 70, px_mouse, py_mouse):
             active = True
-            print(active)
         else:
             active = False
         if check_click(50, 33, 150, 150, px_mouse, py_mouse):
@@ -416,19 +418,18 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             if play == True and sair == True:
                 rankk = True
                 py = 0
+
+
 def main_loop(screen):  
-    global clock, voltar,rankk, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text, nome_jogador
+    global clock, voltar,rankk, width, pausar, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text, nome_jogador
     running = True
 
-    
     fade_img = pygame.Surface((1200,900)).convert_alpha()
     fade = fade_img.get_rect()
     fade_img.fill('black')
     fade_alpha = 255
 
     while running:
-    
-
         for e in pygame.event.get(): 
             if e.type == pygame.QUIT or (sair == False and play == False):
                 running = False
@@ -458,20 +459,16 @@ def main_loop(screen):
                 mouse_click_up(px_mouse, py_mouse, mouse_buttons)
 
 
-
         keys = pygame.key.get_pressed()
-
         if keys[pygame.K_UP]:
             cubo.sobe()
         if keys[pygame.K_DOWN]:
             cubo.desce()
 
 
-
-        # Define FPS máximo
         clock.tick(60)
-        # Calcula tempo transcorrido desde a última atualização 
         dt = clock.get_time()
+
 
 
         if cubo.perdeu == False:
@@ -484,11 +481,11 @@ def main_loop(screen):
                 play = True
                 final(screen)
 
-
-
             else:
-                if play == False:
+                if play == False and pausar == False:
                     start(screen)
+                if play == False and pausar == True:
+                    pause(screen)
                 if play == True:
                     update(dt)
         else:
@@ -499,17 +496,12 @@ def main_loop(screen):
             for espinho in obstaculos2:
                 espinho.movement = 0
             game_over(screen)
-                        
-            
 
 
+        fade_alpha -= 5
+        fade_img.set_alpha(fade_alpha)
+        screen.blit(fade_img, fade)
 
-
-        # fade_alpha -= 5
-        # fade_img.set_alpha(fade_alpha)
-        # screen.blit(fade_img, fade)
-
-        # Pygame atualiza o seu estado
         pygame.display.update()
 
 

@@ -71,11 +71,3 @@ for i, linha in enumerate(arqE):
 arqE.close()
 
 abre()
-
-
-
-
-
-
-
-            
