@@ -31,6 +31,7 @@ class Cubo(pygame.sprite.Sprite):
         self.descendo = False
         self.morre = False
         self.perdeu = False
+        self.pontos = 0
     
     def sobe(self):
         cubo.subindo = True
@@ -39,6 +40,9 @@ class Cubo(pygame.sprite.Sprite):
     def colisao(self):
         self.morre = True
         self.image = self.sprites[1]
+    def moeda(self):
+        self.pontos += 1
+        print(self.pontos)
 
 
 
@@ -168,17 +172,32 @@ class Spike(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.topleft = (x, y)
-        self.movement = 5
+        self.movement = 10
 
 
     def update_x(self):
         self.rect.x -= self.movement
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('imagens/coin.png')
+        self.image = pygame.transform.scale(self.image, (self.image.get_width()/ 1.5, self.image.get_height() / 1.5))
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect.topleft = (x, y)
+        self.movement = 10
+
+    def update_x(self):
+        self.rect.x -= self.movement
+
 
         
 
 # Fase 1
 # Espinhos 
 obstaculos1 = pygame.sprite.Group()
+coins1 = pygame.sprite.Group()
 
 obstaculos1.add(Spike(x=600, y=0, tipo='a'))
 obstaculos1.add(Spike(x=760, y=0, tipo='e'))
@@ -192,6 +211,9 @@ obstaculos1.add(Spike(x=3200, y=450, tipo='k'))
 obstaculos1.add(Spike(x=3080, y=0, tipo='e'))
 obstaculos1.add(Spike(x=3600, y=250, tipo='j'))
 
+coins1.add(Coin(x=900, y=200))
+coins1.add(Coin(x=2100, y=60))
+coins1.add(Coin(x=3400, y=540))
 # MOEDAS FASE 1 (940, "300") (2100, 60) (3100, 540)
 
 
