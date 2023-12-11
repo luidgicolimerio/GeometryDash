@@ -3,14 +3,14 @@ import math
 from pygame.locals import *
 from sys import exit
 from cubo import todas_sprites, cubo, fase1, fase2, fase3
-
+import ranking
 
 width = 1200
 height = 900
 
 
 def load():
-    global sys_font, color_active, color, active, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
+    global sys_font, color_active, color, active, color_inactive, k, text_area, obstaculos1, coins1,obstaculos2, obstaculos3, voltar, clock, x, cl1, cl, i, scroll, fase, play, quad, over, font, sair, inicio, p,  white, black, border_color, font_color, input_text
 
     
     sys_font = pygame.font.Font(pygame.font.get_default_font(), 80)
@@ -26,6 +26,7 @@ def load():
     play = False
     sair = True
     voltar = False
+    k = True
     l1 = fase1()
     obstaculos1, coins1 = l1
     l2 = fase2()
@@ -113,15 +114,14 @@ def start(screen):
 
 
 
-
-
-
-
-
-
 def game_over(screen):
-    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p, obstaculos1, obstaculos2, obstaculos3, coins1
+    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, p, obstaculos1, obstaculos2, obstaculos3, coins1, nome_jogador, fase, k
     screen.fill((0,0,0))
+    if k:
+        ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
+        ranking.escrve()
+        k = False
+    
     while p < 1:
         fade_img = pygame.Surface((1200,900)).convert_alpha()
         fade = fade_img.get_rect()
@@ -142,8 +142,10 @@ def game_over(screen):
         obstaculos1, coins1 = l1
         l2 = fase2()
         obstaculos2 = l2
-        l3 =fase3()
+        l3 = fase3()
         obstaculos3 = l3
+        
+        
         
 
 
@@ -155,8 +157,14 @@ def game_over(screen):
 
 
 def final(screen):
-    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, x
+    global cl1, cl, fundo, tri, ret, quad, fade_alpha, fade_img, fade, x, nome_jogador, fase, k
     screen.fill((0,0,0))
+
+    if k:
+        ranking.cadastra_historico(nome_jogador,cubo.pontos, fase)
+        ranking.escrve()
+        k = False
+
     while x < 1:
         fade_img = pygame.Surface((1200,900)).convert_alpha()
         fade = fade_img.get_rect()
@@ -189,7 +197,7 @@ def final(screen):
         screen.blit(t, (950,810))
 
 def update(dt):
-    global px, cl1, clock, cl, scroll, fase, tiles, i, fade, fade_img, fade_alpha, perdeu
+    global px, cl1, clock, cl, scroll, fase, tiles, i, fade, fade_img, fade_alpha, perdeu, nome_jogador
 
     # MUDANÇA DE FASE
     while i <= 2:
@@ -216,7 +224,6 @@ def update(dt):
         if collision_sprites:
             cubo.colisao()
 
-        
         if collision_coins:
             cubo.moeda()
 
@@ -364,7 +371,7 @@ def mouse_click_up(px_mouse, py_mouse, mouse_buttons):
 def keyboard_keyup(keys):
     pass
 def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
-    global play, sair, voltar, cl1, active
+    global play, sair, voltar, cl1, active, k
     if mouse_buttons[0]: # left
         if check_click(432.8, 470, 334.4, 110, px_mouse, py_mouse):
             play = True
@@ -381,6 +388,8 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
             voltar = True
             cl1 = 0
             cubo.perdeu = False
+            k = True
+
 
         if check_click(50, 50, 300, 40, px_mouse, py_mouse):
             active = True
@@ -410,7 +419,7 @@ def mouse_click_down(px_mouse, py_mouse, mouse_buttons):
 
 
 def main_loop(screen):  
-    global clock, voltar, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text
+    global clock, voltar, width, scroll, fundo, fase, play, sair, fade_alpha, fade_img, fade, cl1, text_area, color, color_active, color_inactive, active, input_text, nome_jogador
     running = True
 
     
@@ -439,8 +448,8 @@ def main_loop(screen):
             elif e.type == pygame.KEYDOWN:
                 if active == True:
                     if e.key == pygame.K_RETURN:
-                        print("Texto digitado:", input_text)  # Aqui você pode usar o texto digitado
-                        input_text = ''
+                        nome_jogador = input_text
+                        print(nome_jogador) 
                     elif e.key == pygame.K_BACKSPACE:
                         input_text = input_text[:-1]
                     else:
@@ -458,7 +467,6 @@ def main_loop(screen):
             cubo.sobe()
         if keys[pygame.K_DOWN]:
             cubo.desce()
-
 
 
 

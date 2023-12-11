@@ -2,6 +2,7 @@ from typing import Any
 import pygame
 from pygame.locals import *
 from pygame.sprite import Group
+import ranking
 
 class Cubo(pygame.sprite.Sprite):
     def __init__(self):
@@ -42,6 +43,7 @@ class Cubo(pygame.sprite.Sprite):
         self.morre = True
         self.tentativas += 1
         self.image = self.sprites[1]
+
     def moeda(self):
         self.pontos += 1
         
