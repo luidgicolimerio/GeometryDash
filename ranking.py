@@ -23,9 +23,11 @@ def escrve():
         nome = jogador[0]
         tentativas = jogador[1]
         arqS.write('%s, %d\n' % (nome, tentativas))
+        i = 2
         for tentativa in range(tentativas):
-            moedas = jogador[2][0]
-            level = jogador[2][1]
+            moedas = jogador[i][0]
+            level = jogador[i][1]
+            i += 1
             arqS.write(f'{moedas},{level}\n' )
     arqS.close()
 
