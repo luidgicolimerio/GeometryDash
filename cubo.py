@@ -69,62 +69,6 @@ class Cubo(pygame.sprite.Sprite):
                 self.morre = False
                 self.image = self.personagem
 
-class Brilho(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-
-        self.sprites_anda = []
-        self.atual = 0
-        self.image = self.sprites_anda[self.atual]
-
-        self.pos_x = 252
-        self.pos_y = 742
-
-        self.rect = self.image.get_rect()
-        self.rect.topleft = self.pos_x, self.pos_y
-
-        self.andando = False
-        self.pulando = False
-
-        self.gravity = 0.4
-        self.heigth = 12
-        self.velocity = self.heigth
-
-    def andar(self):
-        self.andando = True
-
-    def parado(self):
-        self.andando = False
-        self.atual = 0
-        self.image = self.sprites_anda[self.atual]
-    
-    def pula(self):
-        self.pulando = True
-
-    def update(self):
-
-        if self.andando:
-            if self.pos_y >= 742:
-                if self.atual >= 4:
-                    self.atual = 1
-                    self.andando = False
-                self.atual += 0.2
-                self.image = self.sprites_anda[int(self.atual)]
-            else:
-                self.image = self.sprites_anda[0]
-
-        if self.pulando:
-            self.pos_y -= self.velocity
-            self.velocity -= self.gravity
-            self.rect.topleft = self.pos_x, self.pos_y
-            if self.velocity < -self.heigth:
-                self.pulando = False
-                self.gravity = 0.7
-                self.heigth = 12
-                self.velocity = self.heigth
-                self.pos_y = 742
-                self.rect.topleft = self.pos_x, self.pos_y
-
 class Spike(pygame.sprite.Sprite):
     def __init__(self, x, y, tipo):
         pygame.sprite.Sprite.__init__(self)
@@ -178,10 +122,7 @@ class Coin(pygame.sprite.Sprite):
         self.movement = 5
 
     def update_x(self):
-        self.rect.x -= self.movement
-
-
-        
+        self.rect.x -= self.movement   
 
 # Fase 1
 # Espinhos 
